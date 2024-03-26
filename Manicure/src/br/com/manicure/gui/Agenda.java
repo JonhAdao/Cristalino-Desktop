@@ -18,6 +18,8 @@ import javax.swing.table.DefaultTableCellRenderer;
 import br.com.manicure.DAO.ProcedimentoDAO;
 import br.com.manicure.DAO.UsuarioDAO;
 import br.com.manicure.gui.agendamento.NovoAgendamento;
+import br.com.manicure.gui.pacote.EditarPacote;
+import br.com.manicure.gui.pacote.NovoPacote;
 import br.com.manicure.gui.procedimentos.EditarProcedimento;
 import br.com.manicure.model.Agendamentos;
 import br.com.manicure.model.Cliente;
@@ -986,6 +988,11 @@ public class Agenda extends javax.swing.JFrame {
             }
             public void mouseExited(java.awt.event.MouseEvent evt) {
                 bNovoPacotesMouseExited(evt);
+            }
+        });
+        bNovoPacotes.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                bNovoPacotesActionPerformed(evt);
             }
         });
 
@@ -2580,6 +2587,8 @@ public class Agenda extends javax.swing.JFrame {
 
     private void bNovoPacotesMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_bNovoPacotesMouseClicked
         bNovoPacotes.setBackground(Color.decode("#E87916"));
+        NovoPacote pacote = new NovoPacote(this);
+        pacote.setVisible(true);
     }//GEN-LAST:event_bNovoPacotesMouseClicked
 
     private void bNovoPacotesMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_bNovoPacotesMouseEntered
@@ -2592,6 +2601,14 @@ public class Agenda extends javax.swing.JFrame {
 
     private void bEditarPacotesMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_bEditarPacotesMouseClicked
         bEditarPacotes.setBackground(Color.decode("#E87916"));
+        int row = tablePacotes.getSelectedRow();
+        if (row > -1) {
+            Pacotes p = tableModelPacotes.getPacote(row);
+            EditarPacote editar = new EditarPacote(this, p);
+            editar.setVisible(true);
+        } else {
+            JOptionPane.showMessageDialog(null, "Por favor, selecione um procedimento da tabela.", "Atenção", JOptionPane.INFORMATION_MESSAGE);
+        }
     }//GEN-LAST:event_bEditarPacotesMouseClicked
 
     private void bEditarPacotesMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_bEditarPacotesMouseEntered
@@ -2616,6 +2633,24 @@ public class Agenda extends javax.swing.JFrame {
 
     private void bRemoverPacotesMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_bRemoverPacotesMouseClicked
         bRemoverPacotes.setBackground(Color.decode("#E87916"));
+        int row = this.tablePacotes.getSelectedRow();
+        if (row > -1) {
+            Object[] options = {"Sim", "Não"};
+            int resp = JOptionPane.showOptionDialog(null, "Deseja realmente excluir este pacote?", "Informação", JOptionPane.DEFAULT_OPTION, JOptionPane.QUESTION_MESSAGE, null, options, options[0]);
+            if (resp == 0) {
+                Pacotes p = this.tableModelPacotes.getPacote(row);
+                PacotesDAO pDAO = new PacotesDAO();
+                pDAO.removerPacote(p);
+                List<Pacotes> pacotes = pDAO.listarPacotes();
+                if (pacotes != null) {
+                    tableModelPacotes.addLista(pacotes);
+                } else {
+                    JOptionPane.showMessageDialog(null, "Ocorreu um erro ao realizar a exclusão do pacote. Tente novamente mais tarde ou contate o Administrador do sistema", "Atenção", JOptionPane.ERROR_MESSAGE);
+                }
+            }
+        } else {
+            JOptionPane.showMessageDialog(null, "Por favor, selecione um Pacote da tabela.", "Atenção", JOptionPane.INFORMATION_MESSAGE);
+        }
     }//GEN-LAST:event_bRemoverPacotesMouseClicked
 
     private void bRemoverPacotesMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_bRemoverPacotesMouseEntered
@@ -2823,6 +2858,10 @@ public class Agenda extends javax.swing.JFrame {
     private void tBuscarProcedimentoCaretUpdate(javax.swing.event.CaretEvent evt) {//GEN-FIRST:event_tBuscarProcedimentoCaretUpdate
         searchProcedimento();
     }//GEN-LAST:event_tBuscarProcedimentoCaretUpdate
+
+    private void bNovoPacotesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bNovoPacotesActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_bNovoPacotesActionPerformed
 
     /**
      * @param args the command line arguments

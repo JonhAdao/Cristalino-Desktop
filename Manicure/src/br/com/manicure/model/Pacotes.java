@@ -1,6 +1,5 @@
 package br.com.manicure.model;
 
-import java.util.Date;
 
 public class Pacotes {
 

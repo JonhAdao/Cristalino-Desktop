@@ -39,6 +39,10 @@ public class PacotesTable extends AbstractTableModel {
         return colunas[columnIndex];
     }
 
+    public Pacotes getPacote(int row) {
+        return this.pacotes.get(row);
+    }
+
     @Override
     public Object getValueAt(int rowIndex, int columnIndex) {
         Pacotes atualPacote = this.pacotes.get(rowIndex);
