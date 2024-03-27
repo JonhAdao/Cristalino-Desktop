@@ -990,11 +990,6 @@ public class Agenda extends javax.swing.JFrame {
                 bNovoPacotesMouseExited(evt);
             }
         });
-        bNovoPacotes.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                bNovoPacotesActionPerformed(evt);
-            }
-        });
 
         bEditarPacotes.setBackground(new java.awt.Color(232, 121, 22));
         bEditarPacotes.setFont(new java.awt.Font("Segoe UI", 0, 16)); // NOI18N
@@ -1020,6 +1015,12 @@ public class Agenda extends javax.swing.JFrame {
 
         lPesquisarPacotes.setFont(new java.awt.Font("Segoe UI", 0, 16)); // NOI18N
         lPesquisarPacotes.setText("Pesquisar: ");
+
+        tBuscarPacotes.addCaretListener(new javax.swing.event.CaretListener() {
+            public void caretUpdate(javax.swing.event.CaretEvent evt) {
+                tBuscarPacotesCaretUpdate(evt);
+            }
+        });
 
         bBuscarPacotes.setBackground(new java.awt.Color(232, 121, 22));
         bBuscarPacotes.setFont(new java.awt.Font("Segoe UI", 0, 16)); // NOI18N
@@ -2859,9 +2860,9 @@ public class Agenda extends javax.swing.JFrame {
         searchProcedimento();
     }//GEN-LAST:event_tBuscarProcedimentoCaretUpdate
 
-    private void bNovoPacotesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bNovoPacotesActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_bNovoPacotesActionPerformed
+    private void tBuscarPacotesCaretUpdate(javax.swing.event.CaretEvent evt) {//GEN-FIRST:event_tBuscarPacotesCaretUpdate
+        searchPacote();
+    }//GEN-LAST:event_tBuscarPacotesCaretUpdate
 
     /**
      * @param args the command line arguments
@@ -3087,6 +3088,18 @@ public class Agenda extends javax.swing.JFrame {
         tableAgenda.getColumnModel().getColumn(0).setMaxWidth(100);
     }
 
+    public JTable getTableAgenda() {
+        return this.tableAgenda;
+    }
+
+    public com.toedter.calendar.JDateChooser getTDate() {
+        return this.tDate;
+    }
+
+    public void setHorarios() {
+        this.horarios = HorarioDAO.horarios();
+    }
+
     private void searchProcedimento() {
         String busca = this.tBuscarProcedimento.getText();
         ProcedimentoDAO pc = new ProcedimentoDAO();
@@ -3099,15 +3112,16 @@ public class Agenda extends javax.swing.JFrame {
 
     }
 
-    public JTable getTableAgenda() {
-        return this.tableAgenda;
+    private void searchPacote() {
+        String busca = this.tBuscarPacotes.getText();
+        PacotesDAO pc = new PacotesDAO();
+        List<Pacotes> lista;
+        lista = pc.filtrarPacotes(busca);
+        if (lista != null) {
+            this.tableModelPacotes.addLista(lista);
+        }
+        this.tBuscarPacotes.requestFocusInWindow();
+
     }
 
-    public com.toedter.calendar.JDateChooser getTDate() {
-        return this.tDate;
-    }
-
-    public void setHorarios() {
-        this.horarios = HorarioDAO.horarios();
-    }
 }

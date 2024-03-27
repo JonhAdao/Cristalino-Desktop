@@ -7,7 +7,10 @@
         </group>
         <group>
             <file>file:/C:/Users/const/Documents/NETBEANS%20PROJETOS/PROJETOMANICURE_PC/SistemaCristaline/Manicure/src/br/com/manicure/gui/Agenda.java</file>
+            <file>file:/C:/Users/const/Documents/NETBEANS%20PROJETOS/PROJETOMANICURE_PC/SistemaCristaline/Manicure/src/br/com/manicure/gui/pacote/NovoPacote.java</file>
             <file>file:/C:/Users/const/Documents/NETBEANS%20PROJETOS/PROJETOMANICURE_PC/SistemaCristaline/Manicure/src/br/com/manicure/DAO/ProcedimentoDAO.java</file>
+            <file>file:/C:/Users/const/Documents/NETBEANS%20PROJETOS/PROJETOMANICURE_PC/SistemaCristaline/Manicure/src/br/com/manicure/gui/pacote/EditarPacote.java</file>
+            <file>file:/C:/Users/const/Documents/NETBEANS%20PROJETOS/PROJETOMANICURE_PC/SistemaCristaline/Manicure/src/br/com/manicure/gui/procedimentos/EditarProcedimento.java</file>
         </group>
     </open-files>
 </project-private>
