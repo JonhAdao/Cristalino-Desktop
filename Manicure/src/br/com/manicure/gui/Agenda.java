@@ -21,6 +21,8 @@ import br.com.manicure.gui.agendamento.NovoAgendamento;
 import br.com.manicure.gui.pacote.EditarPacote;
 import br.com.manicure.gui.pacote.NovoPacote;
 import br.com.manicure.gui.procedimentos.EditarProcedimento;
+import br.com.manicure.gui.usuarios.EditarUsuario;
+import br.com.manicure.gui.usuarios.NovoUsuario;
 import br.com.manicure.model.Agendamentos;
 import br.com.manicure.model.Cliente;
 import br.com.manicure.model.Clientes;
@@ -800,6 +802,12 @@ public class Agenda extends javax.swing.JFrame {
 
         lPesquisarUsuario.setFont(new java.awt.Font("Segoe UI", 0, 16)); // NOI18N
         lPesquisarUsuario.setText("Pesquisar: ");
+
+        tBuscarUsuario.addCaretListener(new javax.swing.event.CaretListener() {
+            public void caretUpdate(javax.swing.event.CaretEvent evt) {
+                tBuscarUsuarioCaretUpdate(evt);
+            }
+        });
 
         bBuscarUsuario.setBackground(new java.awt.Color(232, 121, 22));
         bBuscarUsuario.setFont(new java.awt.Font("Segoe UI", 0, 16)); // NOI18N
@@ -2539,9 +2547,6 @@ public class Agenda extends javax.swing.JFrame {
         bRemoverCliente.setBackground(Color.decode("#E87916"));
     }//GEN-LAST:event_bRemoverClienteMouseExited
 
-    private void bNovoUsuarioMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_bNovoUsuarioMouseClicked
-        bNovoUsuario.setBackground(Color.decode("#E87916"));    }//GEN-LAST:event_bNovoUsuarioMouseClicked
-
     private void bNovoUsuarioMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_bNovoUsuarioMouseEntered
         bNovoUsuario.setBackground(Color.decode("#EB9F59"));
     }//GEN-LAST:event_bNovoUsuarioMouseEntered
@@ -2552,6 +2557,14 @@ public class Agenda extends javax.swing.JFrame {
 
     private void bEditarUsuarioMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_bEditarUsuarioMouseClicked
         bEditarUsuario.setBackground(Color.decode("#E87916"));
+        int row = tableUsuario.getSelectedRow();
+        if (row > -1) {
+            Usuarios u = tableModelUsuario.getUsuario(row);
+            EditarUsuario editar = new EditarUsuario(this, u);
+            editar.setVisible(true);
+        } else {
+            JOptionPane.showMessageDialog(null, "Por favor, selecione um usuário da tabela.", "Atenção", JOptionPane.INFORMATION_MESSAGE);
+        }
     }//GEN-LAST:event_bEditarUsuarioMouseClicked
 
     private void bEditarUsuarioMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_bEditarUsuarioMouseEntered
@@ -2576,6 +2589,24 @@ public class Agenda extends javax.swing.JFrame {
 
     private void bRemoverUsuarioMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_bRemoverUsuarioMouseClicked
         bRemoverUsuario.setBackground(Color.decode("#E87916"));
+        int row = this.tableUsuario.getSelectedRow();
+        if (row > -1) {
+            Object[] options = {"Sim", "Não"};
+            int resp = JOptionPane.showOptionDialog(null, "Deseja realmente excluir este usuário ?", "Informação", JOptionPane.DEFAULT_OPTION, JOptionPane.QUESTION_MESSAGE, null, options, options[0]);
+            if (resp == 0) {
+                Usuarios u = this.tableModelUsuario.getUsuario(row);
+                UsuarioDAO uDAO = new UsuarioDAO();
+                uDAO.removerUsuario(u);
+                List<Usuarios> usuario = uDAO.listarUsuarios();
+                if (usuario != null) {
+                    tableModelUsuario.addLista(usuario);
+                } else {
+                    JOptionPane.showMessageDialog(null, "Ocorreu um erro ao realizar a exclusão do usuário. Tente novamente mais tarde ou contate o Administrador do sistema", "Atenção", JOptionPane.ERROR_MESSAGE);
+                }
+            }
+        } else {
+            JOptionPane.showMessageDialog(null, "Por favor, selecione um usuário da tabela.", "Atenção", JOptionPane.INFORMATION_MESSAGE);
+        }
     }//GEN-LAST:event_bRemoverUsuarioMouseClicked
 
     private void bRemoverUsuarioMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_bRemoverUsuarioMouseEntered
@@ -2864,6 +2895,16 @@ public class Agenda extends javax.swing.JFrame {
         searchPacote();
     }//GEN-LAST:event_tBuscarPacotesCaretUpdate
 
+    private void bNovoUsuarioMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_bNovoUsuarioMouseClicked
+        bNovoUsuario.setBackground(Color.decode("#E87916"));
+        NovoUsuario usuario = new NovoUsuario(this);
+        usuario.setVisible(true);
+    }//GEN-LAST:event_bNovoUsuarioMouseClicked
+
+    private void tBuscarUsuarioCaretUpdate(javax.swing.event.CaretEvent evt) {//GEN-FIRST:event_tBuscarUsuarioCaretUpdate
+        searchUsuario();
+    }//GEN-LAST:event_tBuscarUsuarioCaretUpdate
+
     /**
      * @param args the command line arguments
      */
@@ -3121,6 +3162,18 @@ public class Agenda extends javax.swing.JFrame {
             this.tableModelPacotes.addLista(lista);
         }
         this.tBuscarPacotes.requestFocusInWindow();
+
+    }
+
+    private void searchUsuario() {
+        String busca = this.tBuscarUsuario.getText();
+        UsuarioDAO uc = new UsuarioDAO();
+        List<Usuarios> lista;
+        lista = uc.filtrarUsuarios(busca);
+        if (lista != null) {
+            this.tableModelUsuario.addLista(lista);
+        }
+        this.tBuscarUsuario.requestFocusInWindow();
 
     }
 

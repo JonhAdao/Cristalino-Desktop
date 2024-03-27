@@ -39,6 +39,10 @@ public class UsuarioTable extends AbstractTableModel {
         return colunas[columnIndex];
     }
 
+    public Usuarios getUsuario(int row) {
+        return this.usuarios.get(row);
+    }
+
     @Override
     public Object getValueAt(int rowIndex, int columnIndex) {
         Usuarios atualUsuario = this.usuarios.get(rowIndex);

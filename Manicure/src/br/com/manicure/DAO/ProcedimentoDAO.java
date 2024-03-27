@@ -2,7 +2,6 @@ package br.com.manicure.DAO;
 
 import br.com.manicure.conexao.Conexao;
 import br.com.manicure.model.Procedimento;
-import java.io.IOException;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;

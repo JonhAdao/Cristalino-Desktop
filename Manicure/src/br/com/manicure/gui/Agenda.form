@@ -1018,6 +1018,9 @@
                       </Properties>
                     </Component>
                     <Component class="javax.swing.JTextField" name="tBuscarUsuario">
+                      <Events>
+                        <EventHandler event="caretUpdate" listener="javax.swing.event.CaretListener" parameters="javax.swing.event.CaretEvent" handler="tBuscarUsuarioCaretUpdate"/>
+                      </Events>
                     </Component>
                     <Component class="javax.swing.JButton" name="bBuscarUsuario">
                       <Properties>
