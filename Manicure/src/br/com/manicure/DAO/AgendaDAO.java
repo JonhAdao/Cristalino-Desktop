@@ -24,7 +24,7 @@ public class AgendaDAO {
 
     private final String AGENDAMENTOS = "SELECT a.idAgendamento,"
             + "c.idCliente, c.nome, p.idProcedimento, p.nomePr, p.valor,"
-            + "co.idCorEsmalte, co.coresdisponiveis, c.endereco_id, e.id_endereco, e.rua, e.numero,"
+            + "co.idCorEsmalte, co.CoresDisponiveis, c.endereco_id, e.id_endereco, e.rua, e.numero,"
             + "a.horario, a.frete, a.observacao FROM agendamento a "
             + "JOIN cliente c ON c.idCliente = a.cliente_id "
             + "JOIN procedimento p ON p.idProcedimento = a.procedimento_id "
@@ -72,6 +72,7 @@ public class AgendaDAO {
         corEsmalte.setCor(rs.getString(8));
 
         Endereco e = null;
+
         if (rs.getInt(9) != 0) {
             e = new Endereco();
             e.setId(rs.getInt(10));

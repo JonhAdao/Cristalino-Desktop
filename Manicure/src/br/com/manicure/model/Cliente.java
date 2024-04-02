@@ -1,5 +1,6 @@
 package br.com.manicure.model;
 
+import java.util.Date;
 import java.util.Scanner;
 
 public class Cliente extends Contato implements operacaoCadastro {
@@ -9,6 +10,7 @@ public class Cliente extends Contato implements operacaoCadastro {
     private int quantAtendimento;
     private Pacotes pacote;
     private Endereco endereco;
+    private String observacao;
 
     Scanner entrada = new Scanner(System.in);
     Scanner entrada1 = new Scanner(System.in);
@@ -41,7 +43,6 @@ public class Cliente extends Contato implements operacaoCadastro {
         this.quantAtendimento = quantAtendimento;
 
     }
-
 
     public String getLogin() {
         return Login;
@@ -81,6 +82,14 @@ public class Cliente extends Contato implements operacaoCadastro {
 
     public void setEndereco(Endereco endereco) {
         this.endereco = endereco;
+    }
+
+    public String getObservacao() {
+        return observacao;
+    }
+
+    public void setObservacao(String observacao) {
+        this.observacao = observacao;
     }
 
     @Override

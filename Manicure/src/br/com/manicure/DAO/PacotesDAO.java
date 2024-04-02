@@ -23,6 +23,8 @@ public class PacotesDAO {
         this.conn = this.conexao.getConexao();
     }
 
+    private final String CADASTRAR_PACOTE = "INSERT INTO pacotes(nomeP, valor, descricao) VALUES (?, ?, ?)";
+
     public void cadastrarPacote(Pacotes pacotes) {
         String CADASTRAR = "INSERT INTO pacotes(nomeP, valor, descricao) VALUES (?, ?, ?)";
 
@@ -118,6 +120,20 @@ public class PacotesDAO {
         } catch (SQLException e) {
             return null;
         }
+    }
+
+    public int cadastrar(Connection conn, PreparedStatement stmt, ResultSet rs, Pacotes pacote) throws SQLException {
+        stmt = conn.prepareStatement(CADASTRAR_PACOTE, PreparedStatement.RETURN_GENERATED_KEYS);
+        stmt.setString(1, pacote.getNome());
+        stmt.setDouble(2, pacote.getValor());
+        stmt.setString(3, pacote.getDescricao());
+        stmt.setInt(4, pacote.getId());
+        stmt.executeUpdate();
+        rs = stmt.getGeneratedKeys();
+        if (rs.next()) {
+            return rs.getInt(4);
+        }
+        return 0;
     }
 
 }

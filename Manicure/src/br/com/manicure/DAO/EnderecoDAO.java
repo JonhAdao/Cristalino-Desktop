@@ -12,7 +12,7 @@ import br.com.manicure.model.Endereco;
  */
 public class EnderecoDAO {
 
-    private final static String CADASTRAR_ENDERECO = "INSERT INTO endereco (CEP, rua, bairro, "
+    private final String CADASTRAR_ENDERECO = "INSERT INTO endereco (CEP, rua, bairro, "
             + "cidade, estado, numero) values (?, ?, ?, ?, ?, ?)";
 
     public int cadastrarEndereco(Connection conn, PreparedStatement stmt, ResultSet rs, Endereco endereco) throws SQLException {
@@ -25,8 +25,9 @@ public class EnderecoDAO {
         stmt.setInt(6, endereco.getNumero());
         stmt.executeUpdate();
         rs = stmt.getGeneratedKeys();
-        if (rs.next()) 
-            return rs.getInt(2);
+        if (rs.next()) {
+            return rs.getInt(1);
+        }
         return 0;
     }
 

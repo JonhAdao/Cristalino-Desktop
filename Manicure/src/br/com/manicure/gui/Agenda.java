@@ -18,6 +18,7 @@ import javax.swing.table.DefaultTableCellRenderer;
 import br.com.manicure.DAO.ProcedimentoDAO;
 import br.com.manicure.DAO.UsuarioDAO;
 import br.com.manicure.gui.agendamento.NovoAgendamento;
+import br.com.manicure.gui.cliente.NovoCliente;
 import br.com.manicure.gui.pacote.EditarPacote;
 import br.com.manicure.gui.pacote.NovoPacote;
 import br.com.manicure.gui.procedimentos.EditarProcedimento;
@@ -2501,6 +2502,8 @@ public class Agenda extends javax.swing.JFrame {
 
     private void bNovoClienteMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_bNovoClienteMouseClicked
         bNovoCliente.setBackground(Color.decode("#E87916"));
+        NovoCliente cliente = new NovoCliente(this);
+        cliente.setVisible(true);
     }//GEN-LAST:event_bNovoClienteMouseClicked
 
     private void bNovoClienteMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_bNovoClienteMouseEntered

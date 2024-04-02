@@ -5,7 +5,6 @@ package br.com.manicure.model;
 
 import br.com.manicure.gui.FixedButtonModel;
 import java.awt.Color;
-import java.awt.Insets;
 import java.sql.Time;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -128,7 +127,7 @@ public class Formatacao {
     }
     
     public static String setCelularMask(String c) {
-        return "(" + c.substring(0, 2) + ") " + c.substring(2, 7) + "-" + c.substring(7, 11);
+        return "(" + c.substring(0, 2) + ") " + c.substring(2, 8) + "-" + c.substring(7, 11);
     }
 
     // Format text field's

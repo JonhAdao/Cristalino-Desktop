@@ -7,10 +7,13 @@
         </group>
         <group>
             <file>file:/C:/Users/const/Documents/NETBEANS%20PROJETOS/PROJETOMANICURE_PC/SistemaCristaline/Manicure/src/br/com/manicure/gui/Agenda.java</file>
-            <file>file:/C:/Users/const/Documents/NETBEANS%20PROJETOS/PROJETOMANICURE_PC/SistemaCristaline/Manicure/src/br/com/manicure/gui/pacote/NovoPacote.java</file>
-            <file>file:/C:/Users/const/Documents/NETBEANS%20PROJETOS/PROJETOMANICURE_PC/SistemaCristaline/Manicure/src/br/com/manicure/DAO/ProcedimentoDAO.java</file>
-            <file>file:/C:/Users/const/Documents/NETBEANS%20PROJETOS/PROJETOMANICURE_PC/SistemaCristaline/Manicure/src/br/com/manicure/gui/pacote/EditarPacote.java</file>
-            <file>file:/C:/Users/const/Documents/NETBEANS%20PROJETOS/PROJETOMANICURE_PC/SistemaCristaline/Manicure/src/br/com/manicure/gui/procedimentos/EditarProcedimento.java</file>
+            <file>file:/C:/Users/const/Documents/NETBEANS%20PROJETOS/PROJETOMANICURE_PC/SistemaCristaline/Manicure/src/br/com/manicure/model/Validacao.java</file>
+            <file>file:/C:/Users/const/Documents/NETBEANS%20PROJETOS/PROJETOMANICURE_PC/SistemaCristaline/Manicure/src/br/com/manicure/model/Formatacao.java</file>
+            <file>file:/C:/Users/const/Documents/NETBEANS%20PROJETOS/PROJETOMANICURE_PC/SistemaCristaline/Manicure/src/br/com/manicure/tabelas/ClienteTable.java</file>
+            <file>file:/C:/Users/const/Documents/NETBEANS%20PROJETOS/PROJETOMANICURE_PC/SistemaCristaline/Manicure/src/br/com/manicure/DAO/UsuarioDAO.java</file>
+            <file>file:/C:/Users/const/Documents/NETBEANS%20PROJETOS/PROJETOMANICURE_PC/SistemaCristaline/Manicure/src/br/com/manicure/gui/cliente/NovoCliente.java</file>
+            <file>file:/C:/Users/const/Documents/NETBEANS%20PROJETOS/PROJETOMANICURE_PC/SistemaCristaline/Manicure/src/br/com/manicure/DAO/ClientesDAO.java</file>
+            <file>file:/C:/Users/const/Documents/NETBEANS%20PROJETOS/PROJETOMANICURE_PC/SistemaCristaline/Manicure/src/br/com/manicure/DAO/EnderecoDAO.java</file>
         </group>
     </open-files>
 </project-private>

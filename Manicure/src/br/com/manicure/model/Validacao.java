@@ -3,6 +3,8 @@
  */
 package br.com.manicure.model;
 
+import br.com.manicure.DAO.ClientesDAO;
+import br.com.manicure.DAO.UsuarioDAO;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -123,7 +125,7 @@ public class Validacao {
         }
 
         resto = (soma % 11);
-        d1 = resto < 2 ? 0 : 11 - resto;
+        d1 = resto < 2 ? 0 :  11 - resto;
 
         if (d1 != Integer.parseInt(cpf.substring(9, 10))) {
             return false;
@@ -143,12 +145,12 @@ public class Validacao {
         return d2 == dig2;
     }
 
-    /*  public static boolean CPFexists(String cpf, int id) {
-        return PacienteController.CPFexists(cpf, id);
+    public static boolean CPFexists(String cpf, int id) {
+        return ClientesDAO.CPFExists(cpf, id);
     }
-    
-    public static boolean loginExists(String login, int id) {
-        return UsuarioController.loginExists(login, id);
+
+    /* public static boolean loginExists(String login, int id) {
+        return UsuarioDAO.loginExists(login, id);
     }*/
     public static boolean hasComma(String v) {
         return v.contains(",");

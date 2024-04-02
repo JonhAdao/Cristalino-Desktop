@@ -30,6 +30,8 @@ public class NovoPacote extends javax.swing.JFrame {
         this.tela = tela;
         this.setTitle("Novo Pacote");
         this.setIconImage(new ImageIcon(getClass().getResource("/br/com/manicure/icones/pacotesicon.png")).getImage());
+        tDescricao.setLineWrap(true);
+        tDescricao.setWrapStyleWord(true);
     }
 
     /**

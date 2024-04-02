@@ -2,6 +2,7 @@ package br.com.manicure.DAO;
 
 import br.com.manicure.conexao.Conexao;
 import br.com.manicure.model.Usuarios;
+import java.io.IOException;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -72,10 +73,10 @@ public class UsuarioDAO {
     }
 
     public List<Usuarios> listarUsuarios() {
-        String sql = "SELECT * FROM usuarios ";
+        String LISTAR = "SELECT * FROM usuarios ";
 
         try {
-            PreparedStatement st = this.conn.prepareStatement(sql);
+            PreparedStatement st = this.conn.prepareStatement(LISTAR);
             ResultSet rs = st.executeQuery();
             List<Usuarios> lista = new ArrayList<>();
             while (rs.next()) {
@@ -107,7 +108,7 @@ public class UsuarioDAO {
                 Usuarios usuarios = new Usuarios();
 
                 usuarios.setId(rs.getInt("idUsuario"));
-                usuarios.setNome(rs.getString("nomePr"));
+                usuarios.setNome(rs.getString("nomeU"));
                 usuarios.setLogin(rs.getString("login"));
 
                 lista.add(usuarios);
@@ -119,4 +120,21 @@ public class UsuarioDAO {
         }
     }
 
+    /* public static boolean loginExists(String login, int id) {
+        String LOGIN_EXISTS = "SELECT * FROM usuario WHERE login = ?";
+
+        try {
+            PreparedStatement st = UsuarioDAO.conn.prepareStatement(LOGIN_EXISTS);
+            st.setString(1, login);
+            ResultSet rs = st.executeQuery();
+
+            if (rs.next()) {
+                return true;
+            }
+
+            return false;
+        } catch (SQLException ex) {
+            System.out.println(ex);
+            return false;
+        }*/
 }
