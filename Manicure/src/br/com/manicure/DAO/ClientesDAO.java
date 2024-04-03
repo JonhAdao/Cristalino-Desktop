@@ -34,6 +34,7 @@ public class ClientesDAO {
 
     private final static String CPF_EXISTS = "SELECT cpf FROM cliente WHERE cpf = ?";
     private final static String CPF_EXISTS_MINUS = "SELECT cpf FROM cliente WHERE cpf = ? AND idCliente != ?";
+    // private final static String CPF_EXISTS = "SELECT cpf FROM cliente WHERE cpf = ?";
 
     private final static String CADASTRAR = "INSERT INTO cliente(nome, cpf, rg, dataNasc, celular, endereco_id, email, sexo, pacote_id, observacao ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 
@@ -48,13 +49,7 @@ public class ClientesDAO {
             conn = new Conexao().getConexao();
             conn.setAutoCommit(false);
 
-            if (cliente.getEndereco() != null) {
-                id_endereco = this.eDAO.cadastrarEndereco(conn, stmt, rs, cliente.getEndereco());
-                if (id_endereco == java.sql.Types.NULL) {
-                    id_endereco = 0;
-                }
-
-            }
+            id_endereco = this.eDAO.cadastrarEndereco(conn, stmt, rs, cliente.getEndereco());
 
             if (cliente.getPacote() != null) {
                 id_pacote = this.pDAO.cadastrar(conn, stmte, rs, cliente.getPacote());
@@ -169,4 +164,33 @@ public class ClientesDAO {
             return false;
         }
     }
+
+    /*public static boolean CPFExists(String cpf, int id) {
+        Connection conn = null;
+        PreparedStatement st = null;
+        ResultSet rs = null;
+
+        try {
+            conn = new Conexao().getConexao();
+
+            if (id == 0) {
+                st = conn.prepareStatement(CPF_EXISTS);
+            } else {
+                st = conn.prepareStatement(CPF_EXISTS_MINUS);
+                st.setInt(2, id);
+            }
+
+            st.setString(1, cpf);
+            rs = st.executeQuery();
+
+            if (rs.next()) {
+                return true;
+            }
+
+            return false;
+        } catch (SQLException ex) {
+            System.out.println(ex);
+            return false;
+        }
+    }*/
 }
