@@ -1,6 +1,6 @@
 package br.com.manicure.gui.procedimentos;
 
-import br.com.manicure.DAO.ProcedimentoDAO;
+import br.com.manicure.dao.factory.DAOFactory;
 import br.com.manicure.gui.Agenda;
 import br.com.manicure.model.Procedimento;
 import br.com.manicure.model.Validacao;
@@ -15,24 +15,28 @@ import javax.swing.JOptionPane;
  * @author John
  */
 public class EditarProcedimento extends javax.swing.JFrame {
-
+    
     private final Procedimento editarProcedimento;
     private final Agenda tela;
 
     /**
      * Creates new form EditarProcedimento
+     *
+     * @param tela
+     * @param p
      */
     public EditarProcedimento(Agenda tela, Procedimento p) {
         initComponents();
         this.setIconImage(new ImageIcon(getClass().getResource("/br/com/manicure/icones/procedimentoicon.png")).getImage());
         this.setTitle("Editar Procedimento");
-
+        
         this.editarProcedimento = p;
         this.tela = tela;
         this.tNome.setText(this.editarProcedimento.getNome());
         this.tPreco.setText(String.valueOf(this.editarProcedimento.getValor()));
         this.boxDuracao.setSelectedItem(editarProcedimento.getDuracao());
-
+        this.tDescricao.setText(this.editarProcedimento.getDescricao());
+        
     }
 
     /**
@@ -52,14 +56,13 @@ public class EditarProcedimento extends javax.swing.JFrame {
         tPreco = new javax.swing.JTextField();
         jLabel7 = new javax.swing.JLabel();
         jLabel6 = new javax.swing.JLabel();
-        jLabel3 = new javax.swing.JLabel();
-        jLabel4 = new javax.swing.JLabel();
-        bSalvarProcedimento = new javax.swing.JButton();
-        bCancelarProcedimento = new javax.swing.JButton();
         boxDuracao = new javax.swing.JComboBox<>();
         jLabel2 = new javax.swing.JLabel();
+        bSalvarProcedimento = new javax.swing.JButton();
+        bCancelarProcedimento = new javax.swing.JButton();
         jScrollPane1 = new javax.swing.JScrollPane();
         tDescricao = new javax.swing.JTextArea();
+        jLabel8 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
@@ -97,11 +100,15 @@ public class EditarProcedimento extends javax.swing.JFrame {
         jLabel6.setMinimumSize(new java.awt.Dimension(40, 20));
         jLabel6.setPreferredSize(new java.awt.Dimension(40, 20));
 
-        jLabel3.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
-        jLabel3.setForeground(new java.awt.Color(255, 51, 0));
-        jLabel3.setText("Duração e Descrição");
+        boxDuracao.setForeground(new java.awt.Color(0, 0, 0));
+        boxDuracao.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "  ", "00h30", "01h00", "01h30", "02h00", "02h30", "03h00", "03h30", "04h00" }));
+        boxDuracao.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0), 0));
 
-        jLabel4.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/com/manicure/icones/configuração (2).png"))); // NOI18N
+        jLabel2.setFont(new java.awt.Font("Segoe UI", 0, 13)); // NOI18N
+        jLabel2.setText("Duração");
+        jLabel2.setMaximumSize(new java.awt.Dimension(40, 20));
+        jLabel2.setMinimumSize(new java.awt.Dimension(40, 20));
+        jLabel2.setPreferredSize(new java.awt.Dimension(40, 20));
 
         javax.swing.GroupLayout inputLayout = new javax.swing.GroupLayout(input);
         input.setLayout(inputLayout);
@@ -111,24 +118,21 @@ public class EditarProcedimento extends javax.swing.JFrame {
                 .addGap(32, 32, 32)
                 .addGroup(inputLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jLabel6, javax.swing.GroupLayout.PREFERRED_SIZE, 65, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 57, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(inputLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(inputLayout.createSequentialGroup()
                         .addComponent(jLabel5, javax.swing.GroupLayout.PREFERRED_SIZE, 10, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(inputLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(tNome, javax.swing.GroupLayout.PREFERRED_SIZE, 419, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addGroup(inputLayout.createSequentialGroup()
-                                .addGap(8, 8, 8)
-                                .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 174, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 47, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                        .addGap(18, 18, 18)
+                        .addComponent(tNome, javax.swing.GroupLayout.PREFERRED_SIZE, 419, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(inputLayout.createSequentialGroup()
                         .addComponent(jLabel7, javax.swing.GroupLayout.PREFERRED_SIZE, 10, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(tPreco, javax.swing.GroupLayout.PREFERRED_SIZE, 125, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap())
+                        .addGap(18, 18, 18)
+                        .addGroup(inputLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(boxDuracao, javax.swing.GroupLayout.PREFERRED_SIZE, 427, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(tPreco, javax.swing.GroupLayout.PREFERRED_SIZE, 125, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                .addContainerGap(89, Short.MAX_VALUE))
         );
         inputLayout.setVerticalGroup(
             inputLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -143,11 +147,11 @@ public class EditarProcedimento extends javax.swing.JFrame {
                     .addComponent(jLabel6, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel7, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(tPreco, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(29, 29, 29)
-                .addGroup(inputLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(jLabel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jLabel4, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 48, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap())
+                .addGap(27, 27, 27)
+                .addGroup(inputLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(boxDuracao, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(22, 22, 22))
         );
 
         bSalvarProcedimento.setBackground(new java.awt.Color(0, 102, 52));
@@ -158,14 +162,6 @@ public class EditarProcedimento extends javax.swing.JFrame {
         bSalvarProcedimento.setBorder(null);
         bSalvarProcedimento.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
         bSalvarProcedimento.setDoubleBuffered(true);
-        bSalvarProcedimento.addFocusListener(new java.awt.event.FocusAdapter() {
-            public void focusGained(java.awt.event.FocusEvent evt) {
-                bSalvarProcedimentoFocusGained(evt);
-            }
-            public void focusLost(java.awt.event.FocusEvent evt) {
-                bSalvarProcedimentoFocusLost(evt);
-            }
-        });
         bSalvarProcedimento.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 bSalvarProcedimentoMouseClicked(evt);
@@ -177,11 +173,6 @@ public class EditarProcedimento extends javax.swing.JFrame {
                 bSalvarProcedimentoMouseExited(evt);
             }
         });
-        bSalvarProcedimento.addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyPressed(java.awt.event.KeyEvent evt) {
-                bSalvarProcedimentoKeyPressed(evt);
-            }
-        });
 
         bCancelarProcedimento.setBackground(new java.awt.Color(183, 21, 1));
         bCancelarProcedimento.setFont(new java.awt.Font("Segoe UI", 0, 16)); // NOI18N
@@ -191,14 +182,6 @@ public class EditarProcedimento extends javax.swing.JFrame {
         bCancelarProcedimento.setBorder(null);
         bCancelarProcedimento.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
         bCancelarProcedimento.setDoubleBuffered(true);
-        bCancelarProcedimento.addFocusListener(new java.awt.event.FocusAdapter() {
-            public void focusGained(java.awt.event.FocusEvent evt) {
-                bCancelarProcedimentoFocusGained(evt);
-            }
-            public void focusLost(java.awt.event.FocusEvent evt) {
-                bCancelarProcedimentoFocusLost(evt);
-            }
-        });
         bCancelarProcedimento.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 bCancelarProcedimentoMouseClicked(evt);
@@ -216,44 +199,33 @@ public class EditarProcedimento extends javax.swing.JFrame {
             }
         });
 
-        boxDuracao.setForeground(new java.awt.Color(0, 0, 0));
-        boxDuracao.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "  ", "00h30", "01h00", "01h30", "02h00", "02h30", "03h00", "03h30", "04h00" }));
-        boxDuracao.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0), 0));
-
-        jLabel2.setFont(new java.awt.Font("Segoe UI", 0, 13)); // NOI18N
-        jLabel2.setText("Descrição");
-        jLabel2.setMaximumSize(new java.awt.Dimension(40, 20));
-        jLabel2.setMinimumSize(new java.awt.Dimension(40, 20));
-        jLabel2.setPreferredSize(new java.awt.Dimension(40, 20));
-
         tDescricao.setColumns(20);
         tDescricao.setRows(5);
         jScrollPane1.setViewportView(tDescricao);
+
+        jLabel8.setFont(new java.awt.Font("Segoe UI", 0, 13)); // NOI18N
+        jLabel8.setText("Descrição");
+        jLabel8.setMaximumSize(new java.awt.Dimension(40, 20));
+        jLabel8.setMinimumSize(new java.awt.Dimension(40, 20));
+        jLabel8.setPreferredSize(new java.awt.Dimension(40, 20));
 
         javax.swing.GroupLayout bgLayout = new javax.swing.GroupLayout(bg);
         bg.setLayout(bgLayout);
         bgLayout.setHorizontalGroup(
             bgLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(input, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
             .addGroup(bgLayout.createSequentialGroup()
-                .addGroup(bgLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGap(30, 30, 30)
+                .addGroup(bgLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addGroup(bgLayout.createSequentialGroup()
-                        .addContainerGap()
-                        .addComponent(input, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addComponent(bSalvarProcedimento, javax.swing.GroupLayout.PREFERRED_SIZE, 104, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(bCancelarProcedimento, javax.swing.GroupLayout.PREFERRED_SIZE, 110, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(bgLayout.createSequentialGroup()
-                        .addGap(53, 53, 53)
-                        .addGroup(bgLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addGroup(bgLayout.createSequentialGroup()
-                                .addComponent(bSalvarProcedimento, javax.swing.GroupLayout.PREFERRED_SIZE, 104, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(bCancelarProcedimento, javax.swing.GroupLayout.PREFERRED_SIZE, 110, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addGroup(bgLayout.createSequentialGroup()
-                                .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 57, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addGroup(bgLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                    .addComponent(boxDuracao, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 422, Short.MAX_VALUE))))
-                        .addGap(0, 0, Short.MAX_VALUE)))
-                .addContainerGap())
+                        .addComponent(jLabel8, javax.swing.GroupLayout.PREFERRED_SIZE, 57, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(43, 43, 43)
+                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 428, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addGap(0, 0, Short.MAX_VALUE))
         );
         bgLayout.setVerticalGroup(
             bgLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -261,16 +233,14 @@ public class EditarProcedimento extends javax.swing.JFrame {
                 .addGap(29, 29, 29)
                 .addComponent(input, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(boxDuracao, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(27, 27, 27)
                 .addGroup(bgLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 128, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(39, 39, 39)
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 128, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel8, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(29, 29, 29)
                 .addGroup(bgLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(bCancelarProcedimento, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(bSalvarProcedimento, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(46, Short.MAX_VALUE))
+                    .addComponent(bSalvarProcedimento, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(bCancelarProcedimento, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(72, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -288,19 +258,6 @@ public class EditarProcedimento extends javax.swing.JFrame {
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
-    private void bSalvarProcedimentoFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_bSalvarProcedimentoFocusGained
-        bSalvarProcedimento.setBackground(Color.decode("#008542"));
-    }//GEN-LAST:event_bSalvarProcedimentoFocusGained
-
-    private void bSalvarProcedimentoFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_bSalvarProcedimentoFocusLost
-        bSalvarProcedimento.setBackground(Color.decode("#006634"));
-    }//GEN-LAST:event_bSalvarProcedimentoFocusLost
-
-    private void bSalvarProcedimentoMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_bSalvarProcedimentoMouseClicked
-        this.edit();
-
-    }//GEN-LAST:event_bSalvarProcedimentoMouseClicked
-
     private void bSalvarProcedimentoMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_bSalvarProcedimentoMouseEntered
         bSalvarProcedimento.setBackground(Color.decode("#008542"));
     }//GEN-LAST:event_bSalvarProcedimentoMouseEntered
@@ -308,20 +265,6 @@ public class EditarProcedimento extends javax.swing.JFrame {
     private void bSalvarProcedimentoMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_bSalvarProcedimentoMouseExited
         bSalvarProcedimento.setBackground(Color.decode("#006634"));
     }//GEN-LAST:event_bSalvarProcedimentoMouseExited
-
-    private void bSalvarProcedimentoKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_bSalvarProcedimentoKeyPressed
-        if (evt.getKeyCode() == KeyEvent.VK_ENTER) {
-
-        }
-    }//GEN-LAST:event_bSalvarProcedimentoKeyPressed
-
-    private void bCancelarProcedimentoFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_bCancelarProcedimentoFocusGained
-        bCancelarProcedimento.setBackground(Color.decode("#AD0000"));
-    }//GEN-LAST:event_bCancelarProcedimentoFocusGained
-
-    private void bCancelarProcedimentoFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_bCancelarProcedimentoFocusLost
-        bCancelarProcedimento.setBackground(Color.decode("#D30000"));
-    }//GEN-LAST:event_bCancelarProcedimentoFocusLost
 
     private void bCancelarProcedimentoMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_bCancelarProcedimentoMouseClicked
         this.dispose();
@@ -340,6 +283,10 @@ public class EditarProcedimento extends javax.swing.JFrame {
             this.dispose();
         }
     }//GEN-LAST:event_bCancelarProcedimentoKeyPressed
+
+    private void bSalvarProcedimentoMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_bSalvarProcedimentoMouseClicked
+        editar();
+    }//GEN-LAST:event_bSalvarProcedimentoMouseClicked
 
     /**
      * @param args the command line arguments
@@ -378,18 +325,16 @@ public class EditarProcedimento extends javax.swing.JFrame {
     private javax.swing.JPanel input;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
-    private javax.swing.JLabel jLabel3;
-    private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel7;
+    private javax.swing.JLabel jLabel8;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTextArea tDescricao;
     private javax.swing.JTextField tNome;
     private javax.swing.JTextField tPreco;
     // End of variables declaration//GEN-END:variables
-
-    private void edit() {
+    private void editar() {
         if (Validacao.isEmpty(tNome.getText())) {
             JOptionPane.showMessageDialog(null, "O campo Nome é obrigatório", "Atenção", JOptionPane.WARNING_MESSAGE);
         } else if (Validacao.isEmpty(tPreco.getText())) {
@@ -399,10 +344,9 @@ public class EditarProcedimento extends javax.swing.JFrame {
             this.editarProcedimento.setValor(Double.valueOf(tPreco.getText()));
             this.editarProcedimento.setDuracao(boxDuracao.getItemAt(boxDuracao.getSelectedIndex()));
             this.editarProcedimento.setDescricao(tDescricao.getText());
-
-            ProcedimentoDAO pDAO = new ProcedimentoDAO();
-            pDAO.editarProcedimento(this.editarProcedimento);
-            List<Procedimento> lista = pDAO.listarProcedimentos();
+            
+            DAOFactory.getProcedimentoDAO().editar(editarProcedimento);
+            List<Procedimento> lista = DAOFactory.getProcedimentoDAO().listar();
             if (lista != null) {
                 this.tela.tableModelProcedimentos.addLista(lista);
                 dispose();
@@ -410,6 +354,5 @@ public class EditarProcedimento extends javax.swing.JFrame {
                 JOptionPane.showMessageDialog(null, "Ocorreu um erro ao realizar a atualização dos dados. Tente novamente mais tarde ou contate o Administrador do sistema", "Atenção", JOptionPane.WARNING_MESSAGE);
             }
         }
-
     }
 }

@@ -2,19 +2,18 @@ package br.com.manicure.model;
 
 public class Procedimento {
 
-    // Quem vai mexer nessa classe vai ser o Cliente
-    private int id;
+    private int idProcedimento;
     private String nome;
     private Double valor;
     private String duracao;
     private String descricao;
 
-    public int getId() {
-        return id;
+    public int getIdProcedimento() {
+        return idProcedimento;
     }
 
-    public void setId(int id) {
-        this.id = id;
+    public void setIdProcedimento(int idProcedimento) {
+        this.idProcedimento = idProcedimento;
     }
 
     public String getNome() {

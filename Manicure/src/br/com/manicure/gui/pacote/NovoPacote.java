@@ -1,22 +1,17 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
- */
 package br.com.manicure.gui.pacote;
 
-import br.com.manicure.DAO.PacotesDAO;
+import br.com.manicure.dao.factory.DAOFactory;
 import br.com.manicure.gui.Agenda;
 import br.com.manicure.model.Pacotes;
 import br.com.manicure.model.Validacao;
 import java.awt.Color;
-import java.awt.event.KeyEvent;
 import java.util.List;
 import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
 
 /**
  *
- * @author const
+ * @author John
  */
 public class NovoPacote extends javax.swing.JFrame {
 
@@ -24,6 +19,8 @@ public class NovoPacote extends javax.swing.JFrame {
 
     /**
      * Creates new form NovoPacote
+     *
+     * @param tela
      */
     public NovoPacote(Agenda tela) {
         initComponents();
@@ -51,13 +48,11 @@ public class NovoPacote extends javax.swing.JFrame {
         labelPreco = new javax.swing.JTextField();
         jLabel7 = new javax.swing.JLabel();
         jLabel6 = new javax.swing.JLabel();
-        jLabel3 = new javax.swing.JLabel();
-        jLabel4 = new javax.swing.JLabel();
-        bSalvarPacote = new javax.swing.JButton();
-        bCancelarPacote = new javax.swing.JButton();
-        jLabel2 = new javax.swing.JLabel();
         jScrollPane1 = new javax.swing.JScrollPane();
         tDescricao = new javax.swing.JTextArea();
+        jLabel2 = new javax.swing.JLabel();
+        bSalvarPacote = new javax.swing.JButton();
+        bCancelarPacote = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
@@ -95,54 +90,59 @@ public class NovoPacote extends javax.swing.JFrame {
         jLabel6.setMinimumSize(new java.awt.Dimension(40, 20));
         jLabel6.setPreferredSize(new java.awt.Dimension(40, 20));
 
-        jLabel3.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
-        jLabel3.setForeground(new java.awt.Color(255, 51, 0));
-        jLabel3.setText("Descrição");
+        tDescricao.setColumns(20);
+        tDescricao.setRows(5);
+        jScrollPane1.setViewportView(tDescricao);
 
-        jLabel4.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/com/manicure/icones/configDesc.png")));
+        jLabel2.setFont(new java.awt.Font("Segoe UI", 0, 13)); // NOI18N
+        jLabel2.setText("Descrição");
+        jLabel2.setMaximumSize(new java.awt.Dimension(40, 20));
+        jLabel2.setMinimumSize(new java.awt.Dimension(40, 20));
+        jLabel2.setPreferredSize(new java.awt.Dimension(40, 20));
 
         javax.swing.GroupLayout inputLayout = new javax.swing.GroupLayout(input);
         input.setLayout(inputLayout);
         inputLayout.setHorizontalGroup(
             inputLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(inputLayout.createSequentialGroup()
-                .addGap(17, 17, 17)
-                .addGroup(inputLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jLabel6, javax.swing.GroupLayout.PREFERRED_SIZE, 65, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(3, 3, 3)
-                .addGroup(inputLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jLabel5, javax.swing.GroupLayout.PREFERRED_SIZE, 10, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel7, javax.swing.GroupLayout.PREFERRED_SIZE, 10, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(31, 31, 31)
                 .addGroup(inputLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(inputLayout.createSequentialGroup()
-                        .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 91, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addComponent(labelPreco, javax.swing.GroupLayout.PREFERRED_SIZE, 125, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(labelNome, javax.swing.GroupLayout.PREFERRED_SIZE, 419, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(12, 12, 12))
+                        .addGap(58, 58, 58)
+                        .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(28, 28, 28)
+                        .addComponent(jLabel5, javax.swing.GroupLayout.PREFERRED_SIZE, 10, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(inputLayout.createSequentialGroup()
+                        .addGap(55, 55, 55)
+                        .addGroup(inputLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 57, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addGroup(inputLayout.createSequentialGroup()
+                                .addComponent(jLabel6, javax.swing.GroupLayout.PREFERRED_SIZE, 65, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(jLabel7, javax.swing.GroupLayout.PREFERRED_SIZE, 10, javax.swing.GroupLayout.PREFERRED_SIZE)))))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(inputLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 422, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(labelNome, javax.swing.GroupLayout.PREFERRED_SIZE, 419, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(labelPreco, javax.swing.GroupLayout.PREFERRED_SIZE, 125, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(117, Short.MAX_VALUE))
         );
         inputLayout.setVerticalGroup(
             inputLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, inputLayout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(inputLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(labelNome, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE)
+            .addGroup(inputLayout.createSequentialGroup()
+                .addContainerGap(45, Short.MAX_VALUE)
+                .addGroup(inputLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(labelNome, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 18, Short.MAX_VALUE)
+                .addGap(18, 18, 18)
+                .addGroup(inputLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(labelPreco, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel6, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel7, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(18, 18, 18)
                 .addGroup(inputLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(inputLayout.createSequentialGroup()
-                        .addComponent(labelPreco, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(29, 29, 29)
-                        .addGroup(inputLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(jLabel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 48, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                    .addGroup(inputLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                        .addComponent(jLabel6, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addComponent(jLabel7, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 182, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap())
         );
 
@@ -154,14 +154,6 @@ public class NovoPacote extends javax.swing.JFrame {
         bSalvarPacote.setBorder(null);
         bSalvarPacote.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
         bSalvarPacote.setDoubleBuffered(true);
-        bSalvarPacote.addFocusListener(new java.awt.event.FocusAdapter() {
-            public void focusGained(java.awt.event.FocusEvent evt) {
-                bSalvarPacoteFocusGained(evt);
-            }
-            public void focusLost(java.awt.event.FocusEvent evt) {
-                bSalvarPacoteFocusLost(evt);
-            }
-        });
         bSalvarPacote.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 bSalvarPacoteMouseClicked(evt);
@@ -173,11 +165,6 @@ public class NovoPacote extends javax.swing.JFrame {
                 bSalvarPacoteMouseExited(evt);
             }
         });
-        bSalvarPacote.addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyPressed(java.awt.event.KeyEvent evt) {
-                bSalvarPacoteKeyPressed(evt);
-            }
-        });
 
         bCancelarPacote.setBackground(new java.awt.Color(183, 21, 1));
         bCancelarPacote.setFont(new java.awt.Font("Segoe UI", 0, 16)); // NOI18N
@@ -187,14 +174,6 @@ public class NovoPacote extends javax.swing.JFrame {
         bCancelarPacote.setBorder(null);
         bCancelarPacote.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
         bCancelarPacote.setDoubleBuffered(true);
-        bCancelarPacote.addFocusListener(new java.awt.event.FocusAdapter() {
-            public void focusGained(java.awt.event.FocusEvent evt) {
-                bCancelarPacoteFocusGained(evt);
-            }
-            public void focusLost(java.awt.event.FocusEvent evt) {
-                bCancelarPacoteFocusLost(evt);
-            }
-        });
         bCancelarPacote.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 bCancelarPacoteMouseClicked(evt);
@@ -206,41 +185,20 @@ public class NovoPacote extends javax.swing.JFrame {
                 bCancelarPacoteMouseExited(evt);
             }
         });
-        bCancelarPacote.addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyPressed(java.awt.event.KeyEvent evt) {
-                bCancelarPacoteKeyPressed(evt);
-            }
-        });
-
-        jLabel2.setFont(new java.awt.Font("Segoe UI", 0, 13)); // NOI18N
-        jLabel2.setText("Descrição");
-        jLabel2.setMaximumSize(new java.awt.Dimension(40, 20));
-        jLabel2.setMinimumSize(new java.awt.Dimension(40, 20));
-        jLabel2.setPreferredSize(new java.awt.Dimension(40, 20));
-
-        tDescricao.setColumns(20);
-        tDescricao.setRows(5);
-        jScrollPane1.setViewportView(tDescricao);
 
         javax.swing.GroupLayout bgLayout = new javax.swing.GroupLayout(bg);
         bg.setLayout(bgLayout);
         bgLayout.setHorizontalGroup(
             bgLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(bgLayout.createSequentialGroup()
-                .addComponent(input, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addContainerGap())
-            .addGroup(bgLayout.createSequentialGroup()
-                .addGap(18, 18, 18)
-                .addGroup(bgLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addGroup(bgLayout.createSequentialGroup()
-                        .addComponent(bSalvarPacote, javax.swing.GroupLayout.PREFERRED_SIZE, 104, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(bCancelarPacote, javax.swing.GroupLayout.PREFERRED_SIZE, 110, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(bgLayout.createSequentialGroup()
-                        .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 57, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(47, 47, 47)
-                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 422, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(76, Short.MAX_VALUE))
+                .addComponent(input, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(0, 0, Short.MAX_VALUE))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, bgLayout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(bSalvarPacote, javax.swing.GroupLayout.PREFERRED_SIZE, 104, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(bCancelarPacote, javax.swing.GroupLayout.PREFERRED_SIZE, 110, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(119, 119, 119))
         );
         bgLayout.setVerticalGroup(
             bgLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -248,15 +206,10 @@ public class NovoPacote extends javax.swing.JFrame {
                 .addGap(23, 23, 23)
                 .addComponent(input, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(bgLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(bgLayout.createSequentialGroup()
-                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 182, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(18, 18, 18)
-                        .addGroup(bgLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(bCancelarPacote, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(bSalvarPacote, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                    .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(73, Short.MAX_VALUE))
+                .addGroup(bgLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(bCancelarPacote, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(bSalvarPacote, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(68, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -274,18 +227,6 @@ public class NovoPacote extends javax.swing.JFrame {
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
-    private void bSalvarPacoteFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_bSalvarPacoteFocusGained
-        bSalvarPacote.setBackground(Color.decode("#008542"));
-    }//GEN-LAST:event_bSalvarPacoteFocusGained
-
-    private void bSalvarPacoteFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_bSalvarPacoteFocusLost
-        bSalvarPacote.setBackground(Color.decode("#006634"));
-    }//GEN-LAST:event_bSalvarPacoteFocusLost
-
-    private void bSalvarPacoteMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_bSalvarPacoteMouseClicked
-        this.create();
-    }//GEN-LAST:event_bSalvarPacoteMouseClicked
-
     private void bSalvarPacoteMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_bSalvarPacoteMouseEntered
         bSalvarPacote.setBackground(Color.decode("#008542"));
     }//GEN-LAST:event_bSalvarPacoteMouseEntered
@@ -293,20 +234,6 @@ public class NovoPacote extends javax.swing.JFrame {
     private void bSalvarPacoteMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_bSalvarPacoteMouseExited
         bSalvarPacote.setBackground(Color.decode("#006634"));
     }//GEN-LAST:event_bSalvarPacoteMouseExited
-
-    private void bSalvarPacoteKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_bSalvarPacoteKeyPressed
-        if (evt.getKeyCode() == KeyEvent.VK_ENTER) {
-            this.create();
-        }
-    }//GEN-LAST:event_bSalvarPacoteKeyPressed
-
-    private void bCancelarPacoteFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_bCancelarPacoteFocusGained
-        bCancelarPacote.setBackground(Color.decode("#AD0000"));
-    }//GEN-LAST:event_bCancelarPacoteFocusGained
-
-    private void bCancelarPacoteFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_bCancelarPacoteFocusLost
-        bCancelarPacote.setBackground(Color.decode("#D30000"));
-    }//GEN-LAST:event_bCancelarPacoteFocusLost
 
     private void bCancelarPacoteMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_bCancelarPacoteMouseClicked
         this.dispose();
@@ -320,9 +247,9 @@ public class NovoPacote extends javax.swing.JFrame {
         bCancelarPacote.setBackground(Color.decode("#D30000"));
     }//GEN-LAST:event_bCancelarPacoteMouseExited
 
-    private void bCancelarPacoteKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_bCancelarPacoteKeyPressed
-        this.dispose();
-    }//GEN-LAST:event_bCancelarPacoteKeyPressed
+    private void bSalvarPacoteMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_bSalvarPacoteMouseClicked
+        registrar();
+    }//GEN-LAST:event_bSalvarPacoteMouseClicked
 
     /**
      * @param args the command line arguments
@@ -366,8 +293,6 @@ public class NovoPacote extends javax.swing.JFrame {
     private javax.swing.JPanel input;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
-    private javax.swing.JLabel jLabel3;
-    private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel7;
@@ -377,7 +302,7 @@ public class NovoPacote extends javax.swing.JFrame {
     private javax.swing.JTextArea tDescricao;
     // End of variables declaration//GEN-END:variables
 
-    private void create() {
+    private void registrar() {
         String nome = labelNome.getText();
         String valor = labelPreco.getText();
         String descricao = tDescricao.getText();
@@ -387,14 +312,14 @@ public class NovoPacote extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(null, "O campo valor é obrigatório", "Atenção", JOptionPane.WARNING_MESSAGE);
         } else {
             Pacotes p = new Pacotes();
-            PacotesDAO pDao = new PacotesDAO();
+
             p.setNome(nome);
             p.setValor(Double.valueOf(valor));
             p.setDescricao(descricao);
 
-            pDao.cadastrarPacote(p);
+            DAOFactory.getPacoteDAO().cadastrar(p);
             JOptionPane.showMessageDialog(null, "O cadastro foi efetuado com sucesso", "Sucesso", JOptionPane.INFORMATION_MESSAGE);
-            List<Pacotes> lista = pDao.listarPacotes();
+            List<Pacotes> lista = DAOFactory.getPacoteDAO().listar();
             if (lista != null) {
                 this.tela.tableModelPacotes.addLista(lista);
                 this.dispose();
@@ -403,5 +328,4 @@ public class NovoPacote extends javax.swing.JFrame {
             }
         }
     }
-
 }

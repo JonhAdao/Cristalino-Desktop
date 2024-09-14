@@ -1,18 +1,18 @@
 package br.com.manicure.gui.usuarios;
 
-import br.com.manicure.DAO.UsuarioDAO;
+import br.com.manicure.dao.factory.DAOFactory;
 import br.com.manicure.gui.Agenda;
+import br.com.manicure.model.Criptografia;
 import br.com.manicure.model.Usuarios;
 import br.com.manicure.model.Validacao;
 import java.awt.Color;
-import java.awt.event.KeyEvent;
 import java.util.List;
 import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
 
 /**
  *
- * @author const
+ * @author John
  */
 public class NovoUsuario extends javax.swing.JFrame {
 
@@ -20,6 +20,8 @@ public class NovoUsuario extends javax.swing.JFrame {
 
     /**
      * Creates new form NovoUsuario
+     *
+     * @param tela
      */
     public NovoUsuario(Agenda tela) {
         initComponents();
@@ -101,14 +103,6 @@ public class NovoUsuario extends javax.swing.JFrame {
         bSalvarUsuario.setBorder(null);
         bSalvarUsuario.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
         bSalvarUsuario.setDoubleBuffered(true);
-        bSalvarUsuario.addFocusListener(new java.awt.event.FocusAdapter() {
-            public void focusGained(java.awt.event.FocusEvent evt) {
-                bSalvarUsuarioFocusGained(evt);
-            }
-            public void focusLost(java.awt.event.FocusEvent evt) {
-                bSalvarUsuarioFocusLost(evt);
-            }
-        });
         bSalvarUsuario.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 bSalvarUsuarioMouseClicked(evt);
@@ -120,11 +114,6 @@ public class NovoUsuario extends javax.swing.JFrame {
                 bSalvarUsuarioMouseExited(evt);
             }
         });
-        bSalvarUsuario.addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyPressed(java.awt.event.KeyEvent evt) {
-                bSalvarUsuarioKeyPressed(evt);
-            }
-        });
 
         bCancelarUsuario.setBackground(new java.awt.Color(183, 21, 1));
         bCancelarUsuario.setFont(new java.awt.Font("Segoe UI", 0, 16)); // NOI18N
@@ -134,14 +123,6 @@ public class NovoUsuario extends javax.swing.JFrame {
         bCancelarUsuario.setBorder(null);
         bCancelarUsuario.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
         bCancelarUsuario.setDoubleBuffered(true);
-        bCancelarUsuario.addFocusListener(new java.awt.event.FocusAdapter() {
-            public void focusGained(java.awt.event.FocusEvent evt) {
-                bCancelarUsuarioFocusGained(evt);
-            }
-            public void focusLost(java.awt.event.FocusEvent evt) {
-                bCancelarUsuarioFocusLost(evt);
-            }
-        });
         bCancelarUsuario.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 bCancelarUsuarioMouseClicked(evt);
@@ -151,11 +132,6 @@ public class NovoUsuario extends javax.swing.JFrame {
             }
             public void mouseExited(java.awt.event.MouseEvent evt) {
                 bCancelarUsuarioMouseExited(evt);
-            }
-        });
-        bCancelarUsuario.addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyPressed(java.awt.event.KeyEvent evt) {
-                bCancelarUsuarioKeyPressed(evt);
             }
         });
 
@@ -260,18 +236,6 @@ public class NovoUsuario extends javax.swing.JFrame {
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
-    private void bSalvarUsuarioFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_bSalvarUsuarioFocusGained
-        bSalvarUsuario.setBackground(Color.decode("#008542"));
-    }//GEN-LAST:event_bSalvarUsuarioFocusGained
-
-    private void bSalvarUsuarioFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_bSalvarUsuarioFocusLost
-        bSalvarUsuario.setBackground(Color.decode("#006634"));
-    }//GEN-LAST:event_bSalvarUsuarioFocusLost
-
-    private void bSalvarUsuarioMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_bSalvarUsuarioMouseClicked
-        this.create();
-    }//GEN-LAST:event_bSalvarUsuarioMouseClicked
-
     private void bSalvarUsuarioMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_bSalvarUsuarioMouseEntered
         bSalvarUsuario.setBackground(Color.decode("#008542"));
     }//GEN-LAST:event_bSalvarUsuarioMouseEntered
@@ -279,20 +243,6 @@ public class NovoUsuario extends javax.swing.JFrame {
     private void bSalvarUsuarioMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_bSalvarUsuarioMouseExited
         bSalvarUsuario.setBackground(Color.decode("#006634"));
     }//GEN-LAST:event_bSalvarUsuarioMouseExited
-
-    private void bSalvarUsuarioKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_bSalvarUsuarioKeyPressed
-        if (evt.getKeyCode() == KeyEvent.VK_ENTER) {
-            this.create();
-        }
-    }//GEN-LAST:event_bSalvarUsuarioKeyPressed
-
-    private void bCancelarUsuarioFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_bCancelarUsuarioFocusGained
-        bCancelarUsuario.setBackground(Color.decode("#AD0000"));
-    }//GEN-LAST:event_bCancelarUsuarioFocusGained
-
-    private void bCancelarUsuarioFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_bCancelarUsuarioFocusLost
-        bCancelarUsuario.setBackground(Color.decode("#D30000"));
-    }//GEN-LAST:event_bCancelarUsuarioFocusLost
 
     private void bCancelarUsuarioMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_bCancelarUsuarioMouseClicked
         this.dispose();
@@ -306,9 +256,9 @@ public class NovoUsuario extends javax.swing.JFrame {
         bCancelarUsuario.setBackground(Color.decode("#D30000"));
     }//GEN-LAST:event_bCancelarUsuarioMouseExited
 
-    private void bCancelarUsuarioKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_bCancelarUsuarioKeyPressed
-        this.dispose();
-    }//GEN-LAST:event_bCancelarUsuarioKeyPressed
+    private void bSalvarUsuarioMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_bSalvarUsuarioMouseClicked
+        registrar();
+    }//GEN-LAST:event_bSalvarUsuarioMouseClicked
 
     /**
      * @param args the command line arguments
@@ -360,8 +310,7 @@ public class NovoUsuario extends javax.swing.JFrame {
     private javax.swing.JTextField tNome;
     private javax.swing.JPasswordField tSenha;
     // End of variables declaration//GEN-END:variables
-
-    private void create() {
+    private void registrar() {
         String nome = tNome.getText();
         String login = tLogin.getText();
         String senha = tSenha.getText();
@@ -373,14 +322,13 @@ public class NovoUsuario extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(null, "O campo senha é obrigatório", "Atenção", JOptionPane.WARNING_MESSAGE);
         } else {
             Usuarios u = new Usuarios();
-            UsuarioDAO uDao = new UsuarioDAO();
             u.setNome(nome);
             u.setLogin(login);
-            u.setSenha(senha);
+            u.setSenha(Criptografia.getMD5(senha));
 
-            uDao.cadastrarUsuario(u);
+            DAOFactory.getUsuarioDAO().cadastrar(u);
             JOptionPane.showMessageDialog(null, "O cadastro foi efetuado com sucesso", "Sucesso", JOptionPane.INFORMATION_MESSAGE);
-            List<Usuarios> lista = uDao.listarUsuarios();
+            List<Usuarios> lista = DAOFactory.getUsuarioDAO().listar();
             if (lista != null) {
                 this.tela.tableModelUsuario.addLista(lista);
                 this.dispose();
@@ -389,5 +337,4 @@ public class NovoUsuario extends javax.swing.JFrame {
             }
         }
     }
-
 }

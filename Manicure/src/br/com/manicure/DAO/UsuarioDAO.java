@@ -1,34 +1,43 @@
 package br.com.manicure.DAO;
 
 import br.com.manicure.conexao.Conexao;
-import br.com.manicure.model.Usuarios;
-import java.io.IOException;
 import java.sql.Connection;
+import br.com.manicure.model.Usuarios;
+import java.util.List;
+import br.com.manicure.interfaces.GenericDAO;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.List;
 
 /**
  *
  * @author John
  */
-public class UsuarioDAO {
+public class UsuarioDAO implements GenericDAO<Usuarios> {
 
-    private Conexao conexao;
-    private Connection conn;
+    private final static String CADASTRAR = "INSERT INTO usuarios(nomeU, login, senha) VALUES (?, ?, ?)";
 
-    public UsuarioDAO() {
-        this.conexao = new Conexao();
-        this.conn = this.conexao.getConexao();
-    }
+    private final static String EDITAR = "UPDATE usuarios SET nomeU = ?, login = ?, senha = ? WHERE idUsuario = ?";
 
-    public void cadastrarUsuario(Usuarios usuario) {
-        String CADASTRAR = "INSERT INTO usuarios(nomeU, login, senha) VALUES (?, ?, ?)";
+    private final static String EXCLUIR = "DELETE FROM usuarios WHERE idUsuario = ?";
+
+    private final static String LISTAR = "SELECT * FROM usuarios ";
+
+    private final static String FILTRAR = "SELECT * FROM usuarios WHERE nomeU LIKE ?  ";
+
+    private final static String LOGIN_EXISTS = "SELECT * FROM usuario WHERE login = ?";
+
+    private final static String USUARIO = "SELECT * FROM usuarios WHERE login = ? AND senha = ?";
+
+    @Override
+    public void cadastrar(Usuarios usuario) {
+        PreparedStatement st = null;
+        Connection conn = null;
 
         try {
-            PreparedStatement st = this.conn.prepareStatement(CADASTRAR);
+            conn = new Conexao().getConexao();
+            st = conn.prepareStatement(CADASTRAR);
             st.setString(1, usuario.getNome());
             st.setString(2, usuario.getLogin());
             st.setString(3, usuario.getSenha());
@@ -39,11 +48,14 @@ public class UsuarioDAO {
         }
     }
 
-    public void editarUsuario(Usuarios usuario) {
-        String EDITAR = "UPDATE usuarios SET nomeU = ?, login = ?, senha = ? WHERE idUsuario = ?";
+    @Override
+    public void editar(Usuarios usuario) {
+        PreparedStatement st = null;
+        Connection conn = null;
 
         try {
-            PreparedStatement st = this.conn.prepareStatement(EDITAR);
+            conn = new Conexao().getConexao();
+            st = conn.prepareStatement(EDITAR);
 
             st.setString(1, usuario.getNome());
             st.setString(2, usuario.getLogin());
@@ -54,30 +66,35 @@ public class UsuarioDAO {
         } catch (SQLException ex) {
             System.out.println(ex);
         }
-
     }
 
-    public void removerUsuario(Usuarios u) {
-        String DELETAR = "DELETE FROM usuarios WHERE idUsuario = ?";
+    @Override
+    public void excluir(Usuarios usuario) {
+        PreparedStatement st = null;
+        Connection conn = null;
 
         try {
-            PreparedStatement st = this.conn.prepareStatement(DELETAR);
+            conn = new Conexao().getConexao();
+            st = conn.prepareStatement(EXCLUIR);
 
-            st.setInt(1, u.getId());
+            st.setInt(1, usuario.getId());
             st.executeUpdate();
 
         } catch (SQLException ex) {
             System.out.println(ex);
         }
-
     }
 
-    public List<Usuarios> listarUsuarios() {
-        String LISTAR = "SELECT * FROM usuarios ";
+    @Override
+    public List<Usuarios> listar() {
+        ResultSet rs = null;
+        PreparedStatement st = null;
+        Connection conn = null;
 
         try {
-            PreparedStatement st = this.conn.prepareStatement(LISTAR);
-            ResultSet rs = st.executeQuery();
+            conn = new Conexao().getConexao();
+            st = conn.prepareStatement(LISTAR);
+            rs = st.executeQuery();
             List<Usuarios> lista = new ArrayList<>();
             while (rs.next()) {
                 Usuarios usuario = new Usuarios();
@@ -96,13 +113,17 @@ public class UsuarioDAO {
         }
     }
 
-    public List<Usuarios> filtrarUsuarios(String busca) {
-        String BUSCAR = "SELECT * FROM usuarios WHERE nomeU LIKE ?  ";
+    @Override
+    public List<Usuarios> filtrar(String busca) {
+        ResultSet rs = null;
+        PreparedStatement st = null;
+        Connection conn = null;
 
         try {
-            PreparedStatement st = this.conn.prepareStatement(BUSCAR);
+            conn = new Conexao().getConexao();
+            st = conn.prepareStatement(FILTRAR);
             st.setString(1, "%" + busca + "%");
-            ResultSet rs = st.executeQuery();
+            rs = st.executeQuery();
             List<Usuarios> lista = new ArrayList<>();
             while (rs.next()) {
                 Usuarios usuarios = new Usuarios();
@@ -120,13 +141,43 @@ public class UsuarioDAO {
         }
     }
 
-    /* public static boolean loginExists(String login, int id) {
-        String LOGIN_EXISTS = "SELECT * FROM usuario WHERE login = ?";
+    public static Usuarios validarUsuario(Usuarios usuario) {
+        ResultSet rs = null;
+        PreparedStatement st = null;
+        Connection conn = null;
+        Usuarios usuarioEncontrado = null;
 
         try {
-            PreparedStatement st = UsuarioDAO.conn.prepareStatement(LOGIN_EXISTS);
+            conn = new Conexao().getConexao();
+            st = conn.prepareStatement(USUARIO);
+
+            st.setString(1, usuario.getLogin());
+            st.setString(2, usuario.getSenha());
+            rs = st.executeQuery();
+            while (rs.next()) {
+                usuarioEncontrado = new Usuarios();
+                usuarioEncontrado.setId(rs.getInt("idUsuario"));
+                usuarioEncontrado.setNome(rs.getString("nomeU"));
+                usuarioEncontrado.setLogin(rs.getString("login"));
+                usuarioEncontrado.setSenha(rs.getString("senha"));
+            }
+        } catch (SQLException ex) {
+            System.out.println("Erro ao encontrar Usuario" + ex.getMessage());
+        }
+
+        return usuarioEncontrado;
+    }
+
+    public static boolean loginExists(String login, int id) {
+        ResultSet rs = null;
+        PreparedStatement st = null;
+        Connection conn = null;
+
+        try {
+            conn = new Conexao().getConexao();
+            st = conn.prepareStatement(LOGIN_EXISTS);
             st.setString(1, login);
-            ResultSet rs = st.executeQuery();
+            rs = st.executeQuery();
 
             if (rs.next()) {
                 return true;
@@ -136,5 +187,7 @@ public class UsuarioDAO {
         } catch (SQLException ex) {
             System.out.println(ex);
             return false;
-        }*/
+        }
+    }
+
 }

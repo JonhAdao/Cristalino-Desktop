@@ -1,22 +1,17 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
- */
 package br.com.manicure.gui.pacote;
 
-import br.com.manicure.DAO.PacotesDAO;
+import br.com.manicure.dao.factory.DAOFactory;
 import br.com.manicure.gui.Agenda;
 import br.com.manicure.model.Pacotes;
 import br.com.manicure.model.Validacao;
 import java.awt.Color;
-import java.awt.event.KeyEvent;
 import java.util.List;
 import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
 
 /**
  *
- * @author const
+ * @author John
  */
 public class EditarPacote extends javax.swing.JFrame {
 
@@ -25,6 +20,9 @@ public class EditarPacote extends javax.swing.JFrame {
 
     /**
      * Creates new form EditarPacote
+     *
+     * @param tela
+     * @param p
      */
     public EditarPacote(Agenda tela, Pacotes p) {
         initComponents();
@@ -56,19 +54,18 @@ public class EditarPacote extends javax.swing.JFrame {
         tPreco = new javax.swing.JTextField();
         jLabel7 = new javax.swing.JLabel();
         jLabel6 = new javax.swing.JLabel();
-        jLabel3 = new javax.swing.JLabel();
-        jLabel4 = new javax.swing.JLabel();
-        bSalvarPacote = new javax.swing.JButton();
-        bCancelarPacote = new javax.swing.JButton();
-        jLabel2 = new javax.swing.JLabel();
         jScrollPane1 = new javax.swing.JScrollPane();
         tDescricao = new javax.swing.JTextArea();
+        jLabel2 = new javax.swing.JLabel();
+        bCancelarPacote = new javax.swing.JButton();
+        bSalvarPacote = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
         bg.setBackground(new java.awt.Color(247, 247, 247));
 
         input.setBackground(new java.awt.Color(247, 247, 247));
+        input.setPreferredSize(new java.awt.Dimension(687, 335));
 
         jLabel5.setFont(new java.awt.Font("Segoe UI", 0, 13)); // NOI18N
         jLabel5.setForeground(new java.awt.Color(211, 0, 0));
@@ -100,89 +97,15 @@ public class EditarPacote extends javax.swing.JFrame {
         jLabel6.setMinimumSize(new java.awt.Dimension(40, 20));
         jLabel6.setPreferredSize(new java.awt.Dimension(40, 20));
 
-        jLabel3.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
-        jLabel3.setForeground(new java.awt.Color(255, 51, 0));
-        jLabel3.setText("Descrição");
+        tDescricao.setColumns(20);
+        tDescricao.setRows(5);
+        jScrollPane1.setViewportView(tDescricao);
 
-        jLabel4.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/com/manicure/icones/configDesc.png")));
-
-        javax.swing.GroupLayout inputLayout = new javax.swing.GroupLayout(input);
-        input.setLayout(inputLayout);
-        inputLayout.setHorizontalGroup(
-            inputLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(inputLayout.createSequentialGroup()
-                .addGap(17, 17, 17)
-                .addGroup(inputLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jLabel6, javax.swing.GroupLayout.PREFERRED_SIZE, 65, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(3, 3, 3)
-                .addGroup(inputLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jLabel5, javax.swing.GroupLayout.PREFERRED_SIZE, 10, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel7, javax.swing.GroupLayout.PREFERRED_SIZE, 10, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(31, 31, 31)
-                .addGroup(inputLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(inputLayout.createSequentialGroup()
-                        .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 91, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addComponent(tPreco, javax.swing.GroupLayout.PREFERRED_SIZE, 125, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(tNome, javax.swing.GroupLayout.PREFERRED_SIZE, 419, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(12, 12, 12))
-        );
-        inputLayout.setVerticalGroup(
-            inputLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, inputLayout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(inputLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(tNome, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 18, Short.MAX_VALUE)
-                .addGroup(inputLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(inputLayout.createSequentialGroup()
-                        .addComponent(tPreco, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(29, 29, 29)
-                        .addGroup(inputLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(jLabel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 48, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                    .addGroup(inputLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                        .addComponent(jLabel6, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addComponent(jLabel7, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap())
-        );
-
-        bSalvarPacote.setBackground(new java.awt.Color(0, 102, 52));
-        bSalvarPacote.setFont(new java.awt.Font("Segoe UI", 0, 16)); // NOI18N
-        bSalvarPacote.setForeground(new java.awt.Color(255, 255, 255));
-        bSalvarPacote.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/com/manicure/icones/Ok.png"))); // NOI18N
-        bSalvarPacote.setText("Salvar");
-        bSalvarPacote.setBorder(null);
-        bSalvarPacote.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
-        bSalvarPacote.setDoubleBuffered(true);
-        bSalvarPacote.addFocusListener(new java.awt.event.FocusAdapter() {
-            public void focusGained(java.awt.event.FocusEvent evt) {
-                bSalvarPacoteFocusGained(evt);
-            }
-            public void focusLost(java.awt.event.FocusEvent evt) {
-                bSalvarPacoteFocusLost(evt);
-            }
-        });
-        bSalvarPacote.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                bSalvarPacoteMouseClicked(evt);
-            }
-            public void mouseEntered(java.awt.event.MouseEvent evt) {
-                bSalvarPacoteMouseEntered(evt);
-            }
-            public void mouseExited(java.awt.event.MouseEvent evt) {
-                bSalvarPacoteMouseExited(evt);
-            }
-        });
-        bSalvarPacote.addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyPressed(java.awt.event.KeyEvent evt) {
-                bSalvarPacoteKeyPressed(evt);
-            }
-        });
+        jLabel2.setFont(new java.awt.Font("Segoe UI", 0, 13)); // NOI18N
+        jLabel2.setText("Descrição");
+        jLabel2.setMaximumSize(new java.awt.Dimension(40, 20));
+        jLabel2.setMinimumSize(new java.awt.Dimension(40, 20));
+        jLabel2.setPreferredSize(new java.awt.Dimension(40, 20));
 
         bCancelarPacote.setBackground(new java.awt.Color(183, 21, 1));
         bCancelarPacote.setFont(new java.awt.Font("Segoe UI", 0, 16)); // NOI18N
@@ -192,14 +115,6 @@ public class EditarPacote extends javax.swing.JFrame {
         bCancelarPacote.setBorder(null);
         bCancelarPacote.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
         bCancelarPacote.setDoubleBuffered(true);
-        bCancelarPacote.addFocusListener(new java.awt.event.FocusAdapter() {
-            public void focusGained(java.awt.event.FocusEvent evt) {
-                bCancelarPacoteFocusGained(evt);
-            }
-            public void focusLost(java.awt.event.FocusEvent evt) {
-                bCancelarPacoteFocusLost(evt);
-            }
-        });
         bCancelarPacote.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 bCancelarPacoteMouseClicked(evt);
@@ -211,59 +126,97 @@ public class EditarPacote extends javax.swing.JFrame {
                 bCancelarPacoteMouseExited(evt);
             }
         });
-        bCancelarPacote.addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyPressed(java.awt.event.KeyEvent evt) {
-                bCancelarPacoteKeyPressed(evt);
+
+        bSalvarPacote.setBackground(new java.awt.Color(0, 102, 52));
+        bSalvarPacote.setFont(new java.awt.Font("Segoe UI", 0, 16)); // NOI18N
+        bSalvarPacote.setForeground(new java.awt.Color(255, 255, 255));
+        bSalvarPacote.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/com/manicure/icones/Ok.png"))); // NOI18N
+        bSalvarPacote.setText("Salvar");
+        bSalvarPacote.setBorder(null);
+        bSalvarPacote.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
+        bSalvarPacote.setDoubleBuffered(true);
+        bSalvarPacote.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                bSalvarPacoteMouseClicked(evt);
+            }
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                bSalvarPacoteMouseEntered(evt);
+            }
+            public void mouseExited(java.awt.event.MouseEvent evt) {
+                bSalvarPacoteMouseExited(evt);
             }
         });
 
-        jLabel2.setFont(new java.awt.Font("Segoe UI", 0, 13)); // NOI18N
-        jLabel2.setText("Descrição");
-        jLabel2.setMaximumSize(new java.awt.Dimension(40, 20));
-        jLabel2.setMinimumSize(new java.awt.Dimension(40, 20));
-        jLabel2.setPreferredSize(new java.awt.Dimension(40, 20));
-
-        tDescricao.setColumns(20);
-        tDescricao.setRows(5);
-        jScrollPane1.setViewportView(tDescricao);
+        javax.swing.GroupLayout inputLayout = new javax.swing.GroupLayout(input);
+        input.setLayout(inputLayout);
+        inputLayout.setHorizontalGroup(
+            inputLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, inputLayout.createSequentialGroup()
+                .addContainerGap(73, Short.MAX_VALUE)
+                .addGroup(inputLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addGroup(inputLayout.createSequentialGroup()
+                        .addComponent(bSalvarPacote, javax.swing.GroupLayout.PREFERRED_SIZE, 104, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(bCancelarPacote, javax.swing.GroupLayout.PREFERRED_SIZE, 110, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(inputLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                        .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, inputLayout.createSequentialGroup()
+                            .addGroup(inputLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                .addGroup(inputLayout.createSequentialGroup()
+                                    .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                    .addComponent(jLabel5, javax.swing.GroupLayout.PREFERRED_SIZE, 13, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addGroup(inputLayout.createSequentialGroup()
+                                    .addComponent(jLabel6, javax.swing.GroupLayout.PREFERRED_SIZE, 65, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                    .addComponent(jLabel7, javax.swing.GroupLayout.PREFERRED_SIZE, 10, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                            .addGap(18, 18, 18)
+                            .addGroup(inputLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                .addComponent(tPreco, javax.swing.GroupLayout.PREFERRED_SIZE, 125, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(tNome, javax.swing.GroupLayout.PREFERRED_SIZE, 419, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGap(3, 3, 3))
+                        .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, inputLayout.createSequentialGroup()
+                            .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 57, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 422, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                .addGap(93, 93, 93))
+        );
+        inputLayout.setVerticalGroup(
+            inputLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, inputLayout.createSequentialGroup()
+                .addGap(44, 44, 44)
+                .addGroup(inputLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(tNome, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(18, 18, 18)
+                .addGroup(inputLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(tPreco, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel6, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel7, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(18, 18, 18)
+                .addGroup(inputLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 198, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 18, Short.MAX_VALUE)
+                .addGroup(inputLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(bCancelarPacote, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(bSalvarPacote, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)))
+        );
 
         javax.swing.GroupLayout bgLayout = new javax.swing.GroupLayout(bg);
         bg.setLayout(bgLayout);
         bgLayout.setHorizontalGroup(
             bgLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(bgLayout.createSequentialGroup()
-                .addComponent(input, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addContainerGap())
-            .addGroup(bgLayout.createSequentialGroup()
-                .addGap(18, 18, 18)
-                .addGroup(bgLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addGroup(bgLayout.createSequentialGroup()
-                        .addComponent(bSalvarPacote, javax.swing.GroupLayout.PREFERRED_SIZE, 104, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(bCancelarPacote, javax.swing.GroupLayout.PREFERRED_SIZE, 110, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(bgLayout.createSequentialGroup()
-                        .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 57, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(47, 47, 47)
-                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 422, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(76, Short.MAX_VALUE))
+                .addComponent(input, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(0, 35, Short.MAX_VALUE))
         );
         bgLayout.setVerticalGroup(
             bgLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(bgLayout.createSequentialGroup()
-                .addGap(23, 23, 23)
-                .addComponent(input, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(bgLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(bgLayout.createSequentialGroup()
-                        .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 185, Short.MAX_VALUE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addGroup(bgLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(bCancelarPacote, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(bSalvarPacote, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(75, 75, 75))
-                    .addGroup(bgLayout.createSequentialGroup()
-                        .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
+                .addGap(32, 32, 32)
+                .addComponent(input, javax.swing.GroupLayout.PREFERRED_SIZE, 402, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(59, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -283,18 +236,6 @@ public class EditarPacote extends javax.swing.JFrame {
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
-    private void bSalvarPacoteFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_bSalvarPacoteFocusGained
-        bSalvarPacote.setBackground(Color.decode("#008542"));
-    }//GEN-LAST:event_bSalvarPacoteFocusGained
-
-    private void bSalvarPacoteFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_bSalvarPacoteFocusLost
-        bSalvarPacote.setBackground(Color.decode("#006634"));
-    }//GEN-LAST:event_bSalvarPacoteFocusLost
-
-    private void bSalvarPacoteMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_bSalvarPacoteMouseClicked
-        this.edit();
-    }//GEN-LAST:event_bSalvarPacoteMouseClicked
-
     private void bSalvarPacoteMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_bSalvarPacoteMouseEntered
         bSalvarPacote.setBackground(Color.decode("#008542"));
     }//GEN-LAST:event_bSalvarPacoteMouseEntered
@@ -302,20 +243,6 @@ public class EditarPacote extends javax.swing.JFrame {
     private void bSalvarPacoteMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_bSalvarPacoteMouseExited
         bSalvarPacote.setBackground(Color.decode("#006634"));
     }//GEN-LAST:event_bSalvarPacoteMouseExited
-
-    private void bSalvarPacoteKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_bSalvarPacoteKeyPressed
-        if (evt.getKeyCode() == KeyEvent.VK_ENTER) {
-            this.edit();
-        }
-    }//GEN-LAST:event_bSalvarPacoteKeyPressed
-
-    private void bCancelarPacoteFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_bCancelarPacoteFocusGained
-        bCancelarPacote.setBackground(Color.decode("#AD0000"));
-    }//GEN-LAST:event_bCancelarPacoteFocusGained
-
-    private void bCancelarPacoteFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_bCancelarPacoteFocusLost
-        bCancelarPacote.setBackground(Color.decode("#D30000"));
-    }//GEN-LAST:event_bCancelarPacoteFocusLost
 
     private void bCancelarPacoteMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_bCancelarPacoteMouseClicked
         this.dispose();
@@ -329,9 +256,9 @@ public class EditarPacote extends javax.swing.JFrame {
         bCancelarPacote.setBackground(Color.decode("#D30000"));
     }//GEN-LAST:event_bCancelarPacoteMouseExited
 
-    private void bCancelarPacoteKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_bCancelarPacoteKeyPressed
-        this.dispose();
-    }//GEN-LAST:event_bCancelarPacoteKeyPressed
+    private void bSalvarPacoteMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_bSalvarPacoteMouseClicked
+        editar();
+    }//GEN-LAST:event_bSalvarPacoteMouseClicked
 
     /**
      * @param args the command line arguments
@@ -375,8 +302,6 @@ public class EditarPacote extends javax.swing.JFrame {
     private javax.swing.JPanel input;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
-    private javax.swing.JLabel jLabel3;
-    private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel7;
@@ -386,7 +311,7 @@ public class EditarPacote extends javax.swing.JFrame {
     private javax.swing.JTextField tPreco;
     // End of variables declaration//GEN-END:variables
 
-    private void edit() {
+    private void editar() {
         if (Validacao.isEmpty(tNome.getText())) {
             JOptionPane.showMessageDialog(null, "O campo Nome é obrigatório", "Atenção", JOptionPane.WARNING_MESSAGE);
         } else if (Validacao.isEmpty(tPreco.getText())) {
@@ -396,9 +321,8 @@ public class EditarPacote extends javax.swing.JFrame {
             this.editarPacotes.setValor(Double.valueOf(tPreco.getText()));
             this.editarPacotes.setDescricao(tDescricao.getText());
 
-            PacotesDAO pDAO = new PacotesDAO();
-            pDAO.editarPacote(this.editarPacotes);
-            List<Pacotes> lista = pDAO.listarPacotes();
+            DAOFactory.getPacoteDAO().editar(this.editarPacotes);
+            List<Pacotes> lista = DAOFactory.getPacoteDAO().listar();
             if (lista != null) {
                 this.tela.tableModelPacotes.addLista(lista);
                 dispose();
@@ -408,5 +332,4 @@ public class EditarPacote extends javax.swing.JFrame {
         }
 
     }
-
 }

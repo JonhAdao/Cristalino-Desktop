@@ -1,10 +1,14 @@
 package br.com.manicure.gui;
 
+import br.com.manicure.DAO.UsuarioDAO;
+import br.com.manicure.model.Usuarios;
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Image;
 import javax.swing.ImageIcon;
 import javax.swing.JComponent;
+import javax.swing.JOptionPane;
+import br.com.manicure.model.Criptografia;
 
 /**
  *
@@ -25,8 +29,7 @@ public class Login extends javax.swing.JFrame {
         btnEntrar.setContentAreaFilled(false);
         btnEntrar.setOpaque(true);
         btnEntrar.setBorderPainted(false);
- 
-        
+        acessoOk.setVisible(false);
 
     }
 
@@ -39,7 +42,7 @@ public class Login extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        ImageIcon icon = new ImageIcon(getClass().getResource("/br/com/manicure/imagens/manicure3.jpg"));
+        ImageIcon icon = new ImageIcon(getClass().getResource("/br/com/manicure/imagens/manicure4.jpg"));
         final Image image = icon.getImage();
         jPanel1 = new javax.swing.JPanel(){
 
@@ -66,6 +69,7 @@ public class Login extends javax.swing.JFrame {
         jLabel7 = new javax.swing.JLabel();
         jLabel6 = new javax.swing.JLabel();
         jLayeredPane1 = new javax.swing.JLayeredPane();
+        acessoOk = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setBackground(new java.awt.Color(255, 153, 0));
@@ -140,11 +144,6 @@ public class Login extends javax.swing.JFrame {
                 btnEntrarMouseExited(evt);
             }
         });
-        btnEntrar.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnEntrarActionPerformed(evt);
-            }
-        });
 
         jLabel7.setFont(new java.awt.Font("Kristen ITC", 1, 12)); // NOI18N
         jLabel7.setForeground(new java.awt.Color(255, 255, 255));
@@ -165,15 +164,16 @@ public class Login extends javax.swing.JFrame {
             .addGap(0, 100, Short.MAX_VALUE)
         );
 
+        acessoOk.setFont(new java.awt.Font("Segoe UI Variable", 1, 12)); // NOI18N
+        acessoOk.setForeground(new java.awt.Color(0, 102, 0));
+        acessoOk.setText("Acesso concedido");
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGap(199, 199, 199)
-                        .addComponent(btnEntrar, javax.swing.GroupLayout.PREFERRED_SIZE, 257, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGap(227, 227, 227)
                         .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 207, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -192,8 +192,16 @@ public class Login extends javax.swing.JFrame {
                             .addComponent(lblTitulo, javax.swing.GroupLayout.PREFERRED_SIZE, 311, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                                 .addComponent(txtLogin)
-                                .addComponent(pxtSenha, javax.swing.GroupLayout.PREFERRED_SIZE, 325, javax.swing.GroupLayout.PREFERRED_SIZE)))))
+                                .addComponent(pxtSenha, javax.swing.GroupLayout.PREFERRED_SIZE, 325, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGap(204, 204, 204)
+                        .addComponent(btnEntrar, javax.swing.GroupLayout.PREFERRED_SIZE, 257, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap(701, Short.MAX_VALUE))
+            .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(jPanel1Layout.createSequentialGroup()
+                    .addGap(287, 287, 287)
+                    .addComponent(acessoOk, javax.swing.GroupLayout.PREFERRED_SIZE, 164, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addContainerGap(748, Short.MAX_VALUE)))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -214,9 +222,14 @@ public class Login extends javax.swing.JFrame {
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(pxtSenha, javax.swing.GroupLayout.PREFERRED_SIZE, 41, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel6))
-                .addGap(79, 79, 79)
+                .addGap(108, 108, 108)
                 .addComponent(btnEntrar, javax.swing.GroupLayout.PREFERRED_SIZE, 66, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(387, Short.MAX_VALUE))
+                .addContainerGap(358, Short.MAX_VALUE))
+            .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                    .addContainerGap(550, Short.MAX_VALUE)
+                    .addComponent(acessoOk)
+                    .addGap(464, 464, 464)))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -235,12 +248,6 @@ public class Login extends javax.swing.JFrame {
         pack();
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
-
-    private void btnEntrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEntrarActionPerformed
-        Agenda inicio = new Agenda();
-        inicio.setVisible(true);
-        this.dispose();
-    }//GEN-LAST:event_btnEntrarActionPerformed
 
     private void txtLoginMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_txtLoginMouseClicked
         if (txtLogin.getText().equals("Usuário"))
@@ -287,6 +294,23 @@ public class Login extends javax.swing.JFrame {
 
     private void btnEntrarMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnEntrarMouseClicked
         btnEntrar.setBackground(Color.decode("#006600"));
+
+        Usuarios usuario = new Usuarios();
+
+        usuario.setLogin(txtLogin.getText());
+        usuario.setSenha(Criptografia.getMD5(pxtSenha.getText()));
+
+        usuario = UsuarioDAO.validarUsuario(usuario);
+
+        if (usuario != null) {
+
+            Agenda agenda = new Agenda();
+            agenda.setVisible(true);
+            this.dispose();
+        } else {
+            JOptionPane.showMessageDialog(null, "Acesso Negado", "Status", JOptionPane.ERROR_MESSAGE);
+
+        }
     }//GEN-LAST:event_btnEntrarMouseClicked
 
     /**
@@ -321,13 +345,13 @@ public class Login extends javax.swing.JFrame {
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
                 new Login().setVisible(true);
-                
 
             }
         });
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JLabel acessoOk;
     private javax.swing.JButton btnEntrar;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel6;

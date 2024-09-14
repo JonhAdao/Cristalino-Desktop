@@ -1,7 +1,8 @@
 package br.com.manicure.model;
 
-class Contato extends Endereco {
+public class Contato {
 
+    protected int idContato;
     protected String email;
     protected String celular;
 
@@ -11,6 +12,14 @@ class Contato extends Endereco {
     public Contato(String email, String celular) {
         this.email = email;
         this.celular = celular;
+    }
+
+    public int getIdContato() {
+        return idContato;
+    }
+
+    public void setIdContato(int idContato) {
+        this.idContato = idContato;
     }
 
     public String getEmail() {
@@ -27,14 +36,6 @@ class Contato extends Endereco {
 
     public void setCelular(String celular) {
         this.celular = celular;
-    }
-
-    public void alteraEmail() {
-
-    }
-
-    public void cadastraEmail() {
-
     }
 
 }

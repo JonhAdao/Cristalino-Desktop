@@ -49,7 +49,7 @@ public class ProcedimentoTable extends AbstractTableModel {
         String val = null;
         switch (columnIndex) {
             case 0:
-                val = Integer.toString(atualProcedimento.getId());
+                val = Integer.toString(atualProcedimento.getIdProcedimento());
                 break;
             case 1:
                 val = atualProcedimento.getNome();

@@ -1,10 +1,9 @@
 /**
- * @author Lais Frigério da Silva
+ * @author John
  */
 package br.com.manicure.model;
 
 import br.com.manicure.DAO.ClientesDAO;
-import br.com.manicure.DAO.UsuarioDAO;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -124,9 +123,7 @@ public class Validacao {
         return ClientesDAO.CPFExists(cpf, id);
     }
 
-    /* public static boolean loginExists(String login, int id) {
-        return UsuarioDAO.loginExists(login, id);
-    }*/
+
     public static boolean hasComma(String v) {
         return v.contains(",");
     }

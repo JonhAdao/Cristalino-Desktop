@@ -1,20 +1,21 @@
 package br.com.manicure.model;
 
+import java.util.Date;
 
 public class Pacotes {
 
-    // Quem vai mexer nessa classe vai ser o Gestor e o Cliente
-    private int id;
+    private int idPacote;
     private String Nome;
     private Double Valor;
     private String Descricao;
+    private Date dataAtendimento;
 
-    public int getId() {
-        return id;
+    public int getIdPacote() {
+        return idPacote;
     }
 
-    public void setId(int id) {
-        this.id = id;
+    public void setIdPacote(int idPacote) {
+        this.idPacote = idPacote;
     }
 
     public String getNome() {
@@ -39,6 +40,14 @@ public class Pacotes {
 
     public void setDescricao(String Descricao) {
         this.Descricao = Descricao;
+    }
+
+    public Date getDataAtendimento() {
+        return dataAtendimento;
+    }
+
+    public void setDataAtendimento(Date dataAtendimento) {
+        this.dataAtendimento = dataAtendimento;
     }
 
 }

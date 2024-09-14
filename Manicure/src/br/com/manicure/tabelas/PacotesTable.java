@@ -39,8 +39,13 @@ public class PacotesTable extends AbstractTableModel {
         return colunas[columnIndex];
     }
 
-    public Pacotes getPacote(int row) {
-        return this.pacotes.get(row);
+    public int getId(int row) {
+        return this.pacotes.get(row).getIdPacote();
+    }
+
+    public void limpar() {
+        this.pacotes.clear();
+        fireTableDataChanged();
     }
 
     @Override
@@ -49,7 +54,7 @@ public class PacotesTable extends AbstractTableModel {
         String val = null;
         switch (columnIndex) {
             case 0:
-                val = Integer.toString(atualPacote.getId());
+                val = Integer.toString(atualPacote.getIdPacote());
                 break;
             case 1:
                 val = atualPacote.getNome();
@@ -65,6 +70,10 @@ public class PacotesTable extends AbstractTableModel {
                 break;
         }
         return val;
+    }
+
+    public Pacotes getPacote(int row) {
+        return this.pacotes.get(row);
     }
 
 }

@@ -1,7 +1,6 @@
 package br.com.manicure.model;
 
 import java.sql.Timestamp;
-import java.sql.Time;
 
 public class Agendamentos {
 
@@ -10,10 +9,11 @@ public class Agendamentos {
     private Procedimento procedimento;
     private Esmalte corEsmalte;
     private Timestamp dataAgendamento;
-    private Time horario;
+    private String horario;
     private Double valoraPagar;
     private Double frete;
     private String observacao;
+    private int atendimentos;
 
     public int getId() {
         return id;
@@ -55,11 +55,11 @@ public class Agendamentos {
         this.dataAgendamento = dataAgendamento;
     }
 
-    public Time getHorario() {
+    public String getHorario() {
         return horario;
     }
 
-    public void setHorario(Time horario) {
+    public void setHorario(String horario) {
         this.horario = horario;
     }
 
@@ -85,6 +85,14 @@ public class Agendamentos {
 
     public void setObservacao(String observacao) {
         this.observacao = observacao;
+    }
+
+    public int getAtendimentos() {
+        return atendimentos;
+    }
+
+    public void setAtendimentos(int atendimentos) {
+        this.atendimentos = atendimentos;
     }
 
 }

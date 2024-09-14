@@ -1,22 +1,17 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
- */
 package br.com.manicure.gui.usuarios;
 
-import br.com.manicure.DAO.UsuarioDAO;
+import br.com.manicure.dao.factory.DAOFactory;
 import br.com.manicure.gui.Agenda;
 import br.com.manicure.model.Usuarios;
 import br.com.manicure.model.Validacao;
 import java.awt.Color;
-import java.awt.event.KeyEvent;
 import java.util.List;
 import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
 
 /**
  *
- * @author const
+ * @author John
  */
 public class EditarUsuario extends javax.swing.JFrame {
 
@@ -25,6 +20,9 @@ public class EditarUsuario extends javax.swing.JFrame {
 
     /**
      * Creates new form EditarUsuario
+     *
+     * @param tela
+     * @param u
      */
     public EditarUsuario(Agenda tela, Usuarios u) {
         initComponents();
@@ -109,14 +107,6 @@ public class EditarUsuario extends javax.swing.JFrame {
         bSalvarUsuario.setBorder(null);
         bSalvarUsuario.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
         bSalvarUsuario.setDoubleBuffered(true);
-        bSalvarUsuario.addFocusListener(new java.awt.event.FocusAdapter() {
-            public void focusGained(java.awt.event.FocusEvent evt) {
-                bSalvarUsuarioFocusGained(evt);
-            }
-            public void focusLost(java.awt.event.FocusEvent evt) {
-                bSalvarUsuarioFocusLost(evt);
-            }
-        });
         bSalvarUsuario.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 bSalvarUsuarioMouseClicked(evt);
@@ -128,11 +118,6 @@ public class EditarUsuario extends javax.swing.JFrame {
                 bSalvarUsuarioMouseExited(evt);
             }
         });
-        bSalvarUsuario.addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyPressed(java.awt.event.KeyEvent evt) {
-                bSalvarUsuarioKeyPressed(evt);
-            }
-        });
 
         bCancelarUsuario.setBackground(new java.awt.Color(183, 21, 1));
         bCancelarUsuario.setFont(new java.awt.Font("Segoe UI", 0, 16)); // NOI18N
@@ -142,14 +127,6 @@ public class EditarUsuario extends javax.swing.JFrame {
         bCancelarUsuario.setBorder(null);
         bCancelarUsuario.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
         bCancelarUsuario.setDoubleBuffered(true);
-        bCancelarUsuario.addFocusListener(new java.awt.event.FocusAdapter() {
-            public void focusGained(java.awt.event.FocusEvent evt) {
-                bCancelarUsuarioFocusGained(evt);
-            }
-            public void focusLost(java.awt.event.FocusEvent evt) {
-                bCancelarUsuarioFocusLost(evt);
-            }
-        });
         bCancelarUsuario.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 bCancelarUsuarioMouseClicked(evt);
@@ -159,11 +136,6 @@ public class EditarUsuario extends javax.swing.JFrame {
             }
             public void mouseExited(java.awt.event.MouseEvent evt) {
                 bCancelarUsuarioMouseExited(evt);
-            }
-        });
-        bCancelarUsuario.addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyPressed(java.awt.event.KeyEvent evt) {
-                bCancelarUsuarioKeyPressed(evt);
             }
         });
 
@@ -251,18 +223,6 @@ public class EditarUsuario extends javax.swing.JFrame {
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
-    private void bSalvarUsuarioFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_bSalvarUsuarioFocusGained
-        bSalvarUsuario.setBackground(Color.decode("#008542"));
-    }//GEN-LAST:event_bSalvarUsuarioFocusGained
-
-    private void bSalvarUsuarioFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_bSalvarUsuarioFocusLost
-        bSalvarUsuario.setBackground(Color.decode("#006634"));
-    }//GEN-LAST:event_bSalvarUsuarioFocusLost
-
-    private void bSalvarUsuarioMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_bSalvarUsuarioMouseClicked
-        this.edit();
-    }//GEN-LAST:event_bSalvarUsuarioMouseClicked
-
     private void bSalvarUsuarioMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_bSalvarUsuarioMouseEntered
         bSalvarUsuario.setBackground(Color.decode("#008542"));
     }//GEN-LAST:event_bSalvarUsuarioMouseEntered
@@ -270,20 +230,6 @@ public class EditarUsuario extends javax.swing.JFrame {
     private void bSalvarUsuarioMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_bSalvarUsuarioMouseExited
         bSalvarUsuario.setBackground(Color.decode("#006634"));
     }//GEN-LAST:event_bSalvarUsuarioMouseExited
-
-    private void bSalvarUsuarioKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_bSalvarUsuarioKeyPressed
-        if (evt.getKeyCode() == KeyEvent.VK_ENTER) {
-            this.edit();
-        }
-    }//GEN-LAST:event_bSalvarUsuarioKeyPressed
-
-    private void bCancelarUsuarioFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_bCancelarUsuarioFocusGained
-        bCancelarUsuario.setBackground(Color.decode("#AD0000"));
-    }//GEN-LAST:event_bCancelarUsuarioFocusGained
-
-    private void bCancelarUsuarioFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_bCancelarUsuarioFocusLost
-        bCancelarUsuario.setBackground(Color.decode("#D30000"));
-    }//GEN-LAST:event_bCancelarUsuarioFocusLost
 
     private void bCancelarUsuarioMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_bCancelarUsuarioMouseClicked
         this.dispose();
@@ -297,9 +243,9 @@ public class EditarUsuario extends javax.swing.JFrame {
         bCancelarUsuario.setBackground(Color.decode("#D30000"));
     }//GEN-LAST:event_bCancelarUsuarioMouseExited
 
-    private void bCancelarUsuarioKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_bCancelarUsuarioKeyPressed
-        this.dispose();
-    }//GEN-LAST:event_bCancelarUsuarioKeyPressed
+    private void bSalvarUsuarioMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_bSalvarUsuarioMouseClicked
+        editar();
+    }//GEN-LAST:event_bSalvarUsuarioMouseClicked
 
     /**
      * @param args the command line arguments
@@ -351,7 +297,7 @@ public class EditarUsuario extends javax.swing.JFrame {
     private javax.swing.JPasswordField tSenha;
     // End of variables declaration//GEN-END:variables
 
-    private void edit() {
+    private void editar() {
         if (Validacao.isEmpty(tNome.getText())) {
             JOptionPane.showMessageDialog(null, "O campo nome é obrigatório", "Atenção", JOptionPane.WARNING_MESSAGE);
         } else if (Validacao.isEmpty(tLogin.getText())) {
@@ -360,9 +306,8 @@ public class EditarUsuario extends javax.swing.JFrame {
             this.editarUsuario.setNome(tNome.getText());
             this.editarUsuario.setLogin(tLogin.getText());
 
-            UsuarioDAO pDAO = new UsuarioDAO();
-            pDAO.editarUsuario(this.editarUsuario);
-            List<Usuarios> lista = pDAO.listarUsuarios();
+            DAOFactory.getUsuarioDAO().editar(editarUsuario);
+            List<Usuarios> lista = DAOFactory.getUsuarioDAO().listar();
             if (lista != null) {
                 this.tela.tableModelUsuario.addLista(lista);
                 dispose();

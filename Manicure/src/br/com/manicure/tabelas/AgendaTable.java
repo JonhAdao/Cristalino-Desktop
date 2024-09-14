@@ -3,6 +3,7 @@
  */
 package br.com.manicure.tabelas;
 
+import br.com.manicure.model.Agendamentos;
 import java.util.ArrayList;
 import java.util.List;
 import javax.swing.table.AbstractTableModel;
@@ -12,6 +13,7 @@ import br.com.manicure.model.Horario;
 public class AgendaTable extends AbstractTableModel {
 
     private List<Horario> horas;
+    private List<Agendamentos> agenda;
     private final String[] colunas = {"Horário", "Cliente", "Procedimento", "Cor do Esmalte", "Endereço", "Valor"};
 
     public AgendaTable() {
@@ -72,6 +74,11 @@ public class AgendaTable extends AbstractTableModel {
 
     }
 
+    public Agendamentos getAgendamento(int row) {
+        return this.agenda.get(row);
+
+    }
+
     public void addLista(List<Horario> horarios) {
         this.horas = horarios;
     }
@@ -119,8 +126,10 @@ public class AgendaTable extends AbstractTableModel {
     }
 
     private String getVal5(Horario a, int column) {
-        if (a.getAgendamento(column).getValoraPagar() != null) {
-            return "R$ " + a.getAgendamento(column).getValoraPagar().toString()+ " (Frete incluso)";
+        if (a.getAgendamento(column).getFrete() != null) {
+            return "R$ " + a.getAgendamento(column).getValoraPagar().toString() + " (Taxa de deslocamento inclusa)";
+        } else if (a.getAgendamento(column).getValoraPagar() != null && a.getAgendamento(column).getFrete() == null) {
+            return "R$ " + a.getAgendamento(column).getValoraPagar().toString();
         } else {
             return "";
         }

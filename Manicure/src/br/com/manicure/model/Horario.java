@@ -42,14 +42,14 @@ public class Horario {
         return this.agendamentos;
     }
 
+    public void setAgendamento(int column, Agendamentos agenda) {
+        this.agendamentos.add(column - 1, agenda);
+    }
+
     public Agendamentos getAgendamento(int column) {
         if (!this.agendamentos.isEmpty() && this.agendamentos.size() > column) {
             return this.agendamentos.get(column);
         }
         return null;
-    }
-
-    public void setAgendamento(int column, Agendamentos agenda) {
-        this.agendamentos.add(column - 1, agenda);
     }
 }

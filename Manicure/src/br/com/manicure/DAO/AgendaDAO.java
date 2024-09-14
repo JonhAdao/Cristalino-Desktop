@@ -18,18 +18,18 @@ import java.util.List;
 
 /**
  *
- * @author const
+ * @author John
  */
 public class AgendaDAO {
 
     private final String AGENDAMENTOS = "SELECT a.idAgendamento,"
             + "c.idCliente, c.nome, p.idProcedimento, p.nomePr, p.valor,"
             + "co.idCorEsmalte, co.CoresDisponiveis, c.endereco_id, e.id_endereco, e.rua, e.numero,"
-            + "a.horario, a.frete, a.observacao FROM agendamento a "
-            + "JOIN cliente c ON c.idCliente = a.cliente_id "
-            + "JOIN procedimento p ON p.idProcedimento = a.procedimento_id "
-            + "JOIN coresmalte co ON co.idCorEsmalte = a.cor_esmalte_id "
-            + "JOIN endereco e ON c.endereco_id = id_endereco "
+            + "a.frete, a.obs FROM agendamento a "
+            + "LEFT JOIN cliente c ON c.idCliente = a.cliente_id "
+            + "LEFT JOIN procedimento p ON p.idProcedimento = a.procedimento_id "
+            + "LEFT JOIN coresmalte co ON co.idCorEsmalte = a.cor_esmalte_id "
+            + "LEFT JOIN endereco e ON c.endereco_id = e.id_endereco "
             + "WHERE a.data_agendamento = ?";
 
     public List<Horario> agendamentos(String data) {
@@ -63,19 +63,19 @@ public class AgendaDAO {
 
     private void getAgendamento(ResultSet rs, Agendamentos a, Date dataAgenda) throws SQLException {
         Procedimento procedimento = new Procedimento();
-        procedimento.setId(rs.getInt(4));
+        procedimento.setIdProcedimento(rs.getInt(4));
         procedimento.setNome(rs.getString(5));
         procedimento.setValor(rs.getDouble(6));
 
         Esmalte corEsmalte = new Esmalte();
-        corEsmalte.setIdEsmalte(7);
+        corEsmalte.setIdEsmalte(rs.getInt(7));
         corEsmalte.setCor(rs.getString(8));
 
         Endereco e = null;
 
         if (rs.getInt(9) != 0) {
             e = new Endereco();
-            e.setId(rs.getInt(10));
+            e.setIdEndereco(rs.getInt(10));
             e.setRua(rs.getString(11));
             e.setNumero(rs.getInt(12));
         }
@@ -87,12 +87,22 @@ public class AgendaDAO {
 
         a.setCliente(cliente);
         a.setProcedimento(procedimento);
-        a.setCorEsmalte(corEsmalte);
+        if (corEsmalte.getIdEsmalte() == 0) {
+            a.setCorEsmalte(null);
+        } else {
+            a.setCorEsmalte(corEsmalte);
+        }
+
         a.setDataAgendamento(new java.sql.Timestamp(dataAgenda.getTime()));
-        a.setHorario(rs.getTime(13));
-        a.setValoraPagar(rs.getDouble(6) + rs.getDouble(14));
+        if (rs.getDouble(13) != 0.0) {
+            a.setFrete(rs.getDouble(13));
+            a.setValoraPagar(rs.getDouble(6) + a.getFrete());
+        } else {
+            a.setValoraPagar(rs.getDouble(6));
+        }
+
         a.setId(rs.getInt(1));
-        a.setObservacao(rs.getString(15));
+        a.setObservacao(rs.getString(14));
     }
 
 }

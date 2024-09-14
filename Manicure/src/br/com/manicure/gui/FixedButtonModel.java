@@ -1,12 +1,12 @@
 /**
- * @author Lais Frigério da Silva
+ * @author John
  */
-
 package br.com.manicure.gui;
 
 import javax.swing.DefaultButtonModel;
 
 public class FixedButtonModel extends DefaultButtonModel {
+
     @Override
     public boolean isPressed() {
         return false;
@@ -19,6 +19,6 @@ public class FixedButtonModel extends DefaultButtonModel {
 
     @Override
     public void setRollover(boolean b) {
-        //NOOP
+
     }
 }

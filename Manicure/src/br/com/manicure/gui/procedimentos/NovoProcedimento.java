@@ -1,16 +1,10 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
- */
 package br.com.manicure.gui.procedimentos;
 
-import br.com.manicure.DAO.ProcedimentoDAO;
-import br.com.manicure.model.Formatacao;
+import br.com.manicure.dao.factory.DAOFactory;
+import br.com.manicure.gui.Agenda;
 import br.com.manicure.model.Procedimento;
 import br.com.manicure.model.Validacao;
-import br.com.manicure.gui.Agenda;
 import java.awt.Color;
-import java.awt.event.KeyEvent;
 import java.util.List;
 import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
@@ -53,18 +47,18 @@ public class NovoProcedimento extends javax.swing.JFrame {
         labelPreco = new javax.swing.JTextField();
         jLabel7 = new javax.swing.JLabel();
         jLabel6 = new javax.swing.JLabel();
-        jLabel3 = new javax.swing.JLabel();
-        jLabel4 = new javax.swing.JLabel();
-        bSalvarProcedimento = new javax.swing.JButton();
-        bCancelarProcedimento = new javax.swing.JButton();
+        jLabel8 = new javax.swing.JLabel();
         boxDuracao = new javax.swing.JComboBox<>();
         jLabel2 = new javax.swing.JLabel();
         jScrollPane1 = new javax.swing.JScrollPane();
         tDescricao = new javax.swing.JTextArea();
+        bCancelarProcedimento = new javax.swing.JButton();
+        bSalvarProcedimento = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
         bg.setBackground(new java.awt.Color(247, 247, 247));
+        bg.setPreferredSize(new java.awt.Dimension(564, 477));
 
         input.setBackground(new java.awt.Color(247, 247, 247));
 
@@ -98,124 +92,11 @@ public class NovoProcedimento extends javax.swing.JFrame {
         jLabel6.setMinimumSize(new java.awt.Dimension(40, 20));
         jLabel6.setPreferredSize(new java.awt.Dimension(40, 20));
 
-        jLabel3.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
-        jLabel3.setForeground(new java.awt.Color(255, 51, 0));
-        jLabel3.setText("Duração e Descrição");
-
-        jLabel4.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/com/manicure/icones/configuração (2).png"))); // NOI18N
-
-        javax.swing.GroupLayout inputLayout = new javax.swing.GroupLayout(input);
-        input.setLayout(inputLayout);
-        inputLayout.setHorizontalGroup(
-            inputLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(inputLayout.createSequentialGroup()
-                .addGap(17, 17, 17)
-                .addGroup(inputLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jLabel6, javax.swing.GroupLayout.PREFERRED_SIZE, 65, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(3, 3, 3)
-                .addGroup(inputLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jLabel5, javax.swing.GroupLayout.PREFERRED_SIZE, 10, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel7, javax.swing.GroupLayout.PREFERRED_SIZE, 10, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(31, 31, 31)
-                .addGroup(inputLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(inputLayout.createSequentialGroup()
-                        .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 174, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 47, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addComponent(labelPreco, javax.swing.GroupLayout.PREFERRED_SIZE, 125, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(labelNome, javax.swing.GroupLayout.PREFERRED_SIZE, 419, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(12, 12, 12))
-        );
-        inputLayout.setVerticalGroup(
-            inputLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, inputLayout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(inputLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(labelNome, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 18, Short.MAX_VALUE)
-                .addGroup(inputLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(inputLayout.createSequentialGroup()
-                        .addComponent(labelPreco, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(29, 29, 29)
-                        .addGroup(inputLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(jLabel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(jLabel4, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 48, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                    .addGroup(inputLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                        .addComponent(jLabel6, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addComponent(jLabel7, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap())
-        );
-
-        labelPreco.getAccessibleContext().setAccessibleParent(input);
-
-        bSalvarProcedimento.setBackground(new java.awt.Color(0, 102, 52));
-        bSalvarProcedimento.setFont(new java.awt.Font("Segoe UI", 0, 16)); // NOI18N
-        bSalvarProcedimento.setForeground(new java.awt.Color(255, 255, 255));
-        bSalvarProcedimento.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/com/manicure/icones/Ok.png"))); // NOI18N
-        bSalvarProcedimento.setText("Salvar");
-        bSalvarProcedimento.setBorder(null);
-        bSalvarProcedimento.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
-        bSalvarProcedimento.setDoubleBuffered(true);
-        bSalvarProcedimento.addFocusListener(new java.awt.event.FocusAdapter() {
-            public void focusGained(java.awt.event.FocusEvent evt) {
-                bSalvarProcedimentoFocusGained(evt);
-            }
-            public void focusLost(java.awt.event.FocusEvent evt) {
-                bSalvarProcedimentoFocusLost(evt);
-            }
-        });
-        bSalvarProcedimento.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                bSalvarProcedimentoMouseClicked(evt);
-            }
-            public void mouseEntered(java.awt.event.MouseEvent evt) {
-                bSalvarProcedimentoMouseEntered(evt);
-            }
-            public void mouseExited(java.awt.event.MouseEvent evt) {
-                bSalvarProcedimentoMouseExited(evt);
-            }
-        });
-        bSalvarProcedimento.addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyPressed(java.awt.event.KeyEvent evt) {
-                bSalvarProcedimentoKeyPressed(evt);
-            }
-        });
-
-        bCancelarProcedimento.setBackground(new java.awt.Color(183, 21, 1));
-        bCancelarProcedimento.setFont(new java.awt.Font("Segoe UI", 0, 16)); // NOI18N
-        bCancelarProcedimento.setForeground(new java.awt.Color(255, 255, 255));
-        bCancelarProcedimento.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/com/manicure/icones/cancelar.png"))); // NOI18N
-        bCancelarProcedimento.setText("Cancelar");
-        bCancelarProcedimento.setBorder(null);
-        bCancelarProcedimento.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
-        bCancelarProcedimento.setDoubleBuffered(true);
-        bCancelarProcedimento.addFocusListener(new java.awt.event.FocusAdapter() {
-            public void focusGained(java.awt.event.FocusEvent evt) {
-                bCancelarProcedimentoFocusGained(evt);
-            }
-            public void focusLost(java.awt.event.FocusEvent evt) {
-                bCancelarProcedimentoFocusLost(evt);
-            }
-        });
-        bCancelarProcedimento.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                bCancelarProcedimentoMouseClicked(evt);
-            }
-            public void mouseEntered(java.awt.event.MouseEvent evt) {
-                bCancelarProcedimentoMouseEntered(evt);
-            }
-            public void mouseExited(java.awt.event.MouseEvent evt) {
-                bCancelarProcedimentoMouseExited(evt);
-            }
-        });
-        bCancelarProcedimento.addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyPressed(java.awt.event.KeyEvent evt) {
-                bCancelarProcedimentoKeyPressed(evt);
-            }
-        });
+        jLabel8.setFont(new java.awt.Font("Segoe UI", 0, 13)); // NOI18N
+        jLabel8.setText("Duração ");
+        jLabel8.setMaximumSize(new java.awt.Dimension(40, 20));
+        jLabel8.setMinimumSize(new java.awt.Dimension(40, 20));
+        jLabel8.setPreferredSize(new java.awt.Dimension(40, 20));
 
         boxDuracao.setForeground(new java.awt.Color(0, 0, 0));
         boxDuracao.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "  ", "00h30", "01h00", "01h30", "02h00", "02h30", "03h00", "03h30", "04h00" }));
@@ -231,73 +112,146 @@ public class NovoProcedimento extends javax.swing.JFrame {
         tDescricao.setRows(5);
         jScrollPane1.setViewportView(tDescricao);
 
+        bCancelarProcedimento.setBackground(new java.awt.Color(183, 21, 1));
+        bCancelarProcedimento.setFont(new java.awt.Font("Segoe UI", 0, 16)); // NOI18N
+        bCancelarProcedimento.setForeground(new java.awt.Color(255, 255, 255));
+        bCancelarProcedimento.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/com/manicure/icones/cancelar.png"))); // NOI18N
+        bCancelarProcedimento.setText("Cancelar");
+        bCancelarProcedimento.setBorder(null);
+        bCancelarProcedimento.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
+        bCancelarProcedimento.setDoubleBuffered(true);
+        bCancelarProcedimento.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                bCancelarProcedimentoMouseClicked(evt);
+            }
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                bCancelarProcedimentoMouseEntered(evt);
+            }
+            public void mouseExited(java.awt.event.MouseEvent evt) {
+                bCancelarProcedimentoMouseExited(evt);
+            }
+        });
+
+        bSalvarProcedimento.setBackground(new java.awt.Color(0, 102, 52));
+        bSalvarProcedimento.setFont(new java.awt.Font("Segoe UI", 0, 16)); // NOI18N
+        bSalvarProcedimento.setForeground(new java.awt.Color(255, 255, 255));
+        bSalvarProcedimento.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/com/manicure/icones/Ok.png"))); // NOI18N
+        bSalvarProcedimento.setText("Salvar");
+        bSalvarProcedimento.setBorder(null);
+        bSalvarProcedimento.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
+        bSalvarProcedimento.setDoubleBuffered(true);
+        bSalvarProcedimento.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                bSalvarProcedimentoMouseClicked(evt);
+            }
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                bSalvarProcedimentoMouseEntered(evt);
+            }
+            public void mouseExited(java.awt.event.MouseEvent evt) {
+                bSalvarProcedimentoMouseExited(evt);
+            }
+        });
+
+        javax.swing.GroupLayout inputLayout = new javax.swing.GroupLayout(input);
+        input.setLayout(inputLayout);
+        inputLayout.setHorizontalGroup(
+            inputLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(inputLayout.createSequentialGroup()
+                .addGap(23, 23, 23)
+                .addGroup(inputLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addGroup(inputLayout.createSequentialGroup()
+                        .addComponent(bSalvarProcedimento, javax.swing.GroupLayout.PREFERRED_SIZE, 104, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(bCancelarProcedimento, javax.swing.GroupLayout.PREFERRED_SIZE, 110, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(inputLayout.createSequentialGroup()
+                        .addGroup(inputLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addGroup(inputLayout.createSequentialGroup()
+                                .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(32, 32, 32)
+                                .addComponent(jLabel5, javax.swing.GroupLayout.PREFERRED_SIZE, 10, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(inputLayout.createSequentialGroup()
+                                .addGroup(inputLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                    .addComponent(jLabel6, javax.swing.GroupLayout.PREFERRED_SIZE, 59, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 57, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(jLabel8, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 57, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(jLabel7, javax.swing.GroupLayout.PREFERRED_SIZE, 10, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addGap(18, 18, 18)
+                        .addGroup(inputLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(labelNome, javax.swing.GroupLayout.PREFERRED_SIZE, 419, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(labelPreco, javax.swing.GroupLayout.PREFERRED_SIZE, 125, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(boxDuracao, javax.swing.GroupLayout.PREFERRED_SIZE, 422, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 422, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                .addContainerGap(79, Short.MAX_VALUE))
+        );
+        inputLayout.setVerticalGroup(
+            inputLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, inputLayout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(inputLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(inputLayout.createSequentialGroup()
+                        .addComponent(labelNome, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(18, 18, 18)
+                        .addGroup(inputLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jLabel6, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(labelPreco, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(19, 19, 19)
+                        .addGroup(inputLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(boxDuracao, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jLabel8, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGroup(inputLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(inputLayout.createSequentialGroup()
+                                .addGap(18, 18, 18)
+                                .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(inputLayout.createSequentialGroup()
+                                .addGap(27, 27, 27)
+                                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 141, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                    .addGroup(inputLayout.createSequentialGroup()
+                        .addGroup(inputLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jLabel5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(29, 29, 29)
+                        .addComponent(jLabel7, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 28, Short.MAX_VALUE)
+                .addGroup(inputLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(bSalvarProcedimento, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(bCancelarProcedimento, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap())
+        );
+
+        labelPreco.getAccessibleContext().setAccessibleParent(input);
+
         javax.swing.GroupLayout bgLayout = new javax.swing.GroupLayout(bg);
         bg.setLayout(bgLayout);
         bgLayout.setHorizontalGroup(
             bgLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(bgLayout.createSequentialGroup()
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, bgLayout.createSequentialGroup()
+                .addContainerGap()
                 .addComponent(input, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addContainerGap())
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, bgLayout.createSequentialGroup()
-                .addGap(19, 19, 19)
-                .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 57, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(35, 35, 35)
-                .addGroup(bgLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 422, Short.MAX_VALUE)
-                    .addComponent(boxDuracao, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addGroup(bgLayout.createSequentialGroup()
-                        .addComponent(bSalvarProcedimento, javax.swing.GroupLayout.PREFERRED_SIZE, 104, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(bCancelarProcedimento, javax.swing.GroupLayout.PREFERRED_SIZE, 110, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(9, 9, 9)))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         bgLayout.setVerticalGroup(
             bgLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(bgLayout.createSequentialGroup()
-                .addGap(23, 23, 23)
+                .addGap(44, 44, 44)
                 .addComponent(input, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(boxDuracao, javax.swing.GroupLayout.DEFAULT_SIZE, 33, Short.MAX_VALUE)
-                .addGap(33, 33, 33)
-                .addGroup(bgLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 128, Short.MAX_VALUE))
-                .addGap(41, 41, 41)
-                .addGroup(bgLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(bCancelarProcedimento, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(bSalvarProcedimento, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(37, 37, 37))
+                .addContainerGap(62, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(bg, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addComponent(bg, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 636, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addComponent(bg, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 0, Short.MAX_VALUE))
+            .addComponent(bg, javax.swing.GroupLayout.DEFAULT_SIZE, 490, Short.MAX_VALUE)
         );
 
         pack();
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
-
-    private void bSalvarProcedimentoFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_bSalvarProcedimentoFocusGained
-        bSalvarProcedimento.setBackground(Color.decode("#008542"));
-    }//GEN-LAST:event_bSalvarProcedimentoFocusGained
-
-    private void bSalvarProcedimentoFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_bSalvarProcedimentoFocusLost
-        bSalvarProcedimento.setBackground(Color.decode("#006634"));
-    }//GEN-LAST:event_bSalvarProcedimentoFocusLost
-
-    private void bSalvarProcedimentoMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_bSalvarProcedimentoMouseClicked
-        this.create();
-    }//GEN-LAST:event_bSalvarProcedimentoMouseClicked
 
     private void bSalvarProcedimentoMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_bSalvarProcedimentoMouseEntered
         bSalvarProcedimento.setBackground(Color.decode("#008542"));
@@ -306,20 +260,6 @@ public class NovoProcedimento extends javax.swing.JFrame {
     private void bSalvarProcedimentoMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_bSalvarProcedimentoMouseExited
         bSalvarProcedimento.setBackground(Color.decode("#006634"));
     }//GEN-LAST:event_bSalvarProcedimentoMouseExited
-
-    private void bSalvarProcedimentoKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_bSalvarProcedimentoKeyPressed
-        if (evt.getKeyCode() == KeyEvent.VK_ENTER) {
-            this.create();
-        }
-    }//GEN-LAST:event_bSalvarProcedimentoKeyPressed
-
-    private void bCancelarProcedimentoFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_bCancelarProcedimentoFocusGained
-        bCancelarProcedimento.setBackground(Color.decode("#AD0000"));
-    }//GEN-LAST:event_bCancelarProcedimentoFocusGained
-
-    private void bCancelarProcedimentoFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_bCancelarProcedimentoFocusLost
-        bCancelarProcedimento.setBackground(Color.decode("#D30000"));
-    }//GEN-LAST:event_bCancelarProcedimentoFocusLost
 
     private void bCancelarProcedimentoMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_bCancelarProcedimentoMouseClicked
         this.dispose();
@@ -333,11 +273,9 @@ public class NovoProcedimento extends javax.swing.JFrame {
         bCancelarProcedimento.setBackground(Color.decode("#D30000"));
     }//GEN-LAST:event_bCancelarProcedimentoMouseExited
 
-    private void bCancelarProcedimentoKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_bCancelarProcedimentoKeyPressed
-        if (evt.getKeyCode() == KeyEvent.VK_ENTER) {
-            this.dispose();
-        }
-    }//GEN-LAST:event_bCancelarProcedimentoKeyPressed
+    private void bSalvarProcedimentoMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_bSalvarProcedimentoMouseClicked
+        this.registrar();
+    }//GEN-LAST:event_bSalvarProcedimentoMouseClicked
 
     /**
      * @param args the command line arguments
@@ -382,35 +320,35 @@ public class NovoProcedimento extends javax.swing.JFrame {
     private javax.swing.JPanel input;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
-    private javax.swing.JLabel jLabel3;
-    private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel7;
+    private javax.swing.JLabel jLabel8;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTextField labelNome;
     private javax.swing.JTextField labelPreco;
     private javax.swing.JTextArea tDescricao;
     // End of variables declaration//GEN-END:variables
 
-    private void create() {
+    private void registrar() {
         String nome = labelNome.getText();
         String valor = labelPreco.getText();
         String duracao = boxDuracao.getSelectedItem().toString();
+        String descricao = tDescricao.getText();
         if (Validacao.isEmpty(nome)) {
             JOptionPane.showMessageDialog(null, "O campo nome é obrigatório", "Atenção", JOptionPane.WARNING_MESSAGE);
         } else if (Validacao.isEmpty(valor)) {
             JOptionPane.showMessageDialog(null, "O campo valor é obrigatório", "Atenção", JOptionPane.WARNING_MESSAGE);
         } else {
             Procedimento p = new Procedimento();
-            ProcedimentoDAO pDao = new ProcedimentoDAO();
             p.setNome(nome);
             p.setValor(Double.parseDouble(valor));
             p.setDuracao(duracao);
+            p.setDescricao(descricao);
 
-            pDao.cadastrarProcedimento(p);
+            DAOFactory.getProcedimentoDAO().cadastrar(p);
             JOptionPane.showMessageDialog(null, "O cadastro foi efetuado com sucesso", "Sucesso", JOptionPane.INFORMATION_MESSAGE);
-            List<Procedimento> lista = pDao.listarProcedimentos();
+            List<Procedimento> lista = DAOFactory.getProcedimentoDAO().listar();
             if (lista != null) {
                 this.tela.tableModelProcedimentos.addLista(lista);
                 this.dispose();

@@ -10,9 +10,8 @@ public class Pessoa {
     protected String rg;
     protected Date dataNasc;
     protected String sexo;
-
-    public Pessoa() {
-    }
+    protected Endereco endereco;
+    protected Contato contato;
 
     public int getId() {
         return id;
@@ -60,6 +59,22 @@ public class Pessoa {
 
     public void setSexo(String sexo) {
         this.sexo = sexo;
+    }
+
+    public Endereco getEndereco() {
+        return endereco;
+    }
+
+    public void setEndereco(Endereco endereco) {
+        this.endereco = endereco;
+    }
+
+    public Contato getContato() {
+        return contato;
+    }
+
+    public void setContato(Contato contato) {
+        this.contato = contato;
     }
 
 }

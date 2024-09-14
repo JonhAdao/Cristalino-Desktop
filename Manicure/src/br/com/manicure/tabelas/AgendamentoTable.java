@@ -8,7 +8,7 @@ import javax.swing.table.AbstractTableModel;
 
 /**
  *
- * @author const
+ * @author John
  */
 public class AgendamentoTable extends AbstractTableModel {
 
@@ -61,7 +61,7 @@ public class AgendamentoTable extends AbstractTableModel {
         return val;
     }
 
-    public Agendamentos getCliente(int row) {
+    public Agendamentos getAgendamento(int row) {
         return this.agendamento.get(row);
     }
 

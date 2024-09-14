@@ -9,6 +9,8 @@ public class Conexao {
     /**
      * Método que retorna a conexão com o banco de dados
      *
+     * @author John
+     *
      * @return
      */
     public Connection getConexao() {

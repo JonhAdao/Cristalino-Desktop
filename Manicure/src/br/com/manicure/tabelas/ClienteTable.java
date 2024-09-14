@@ -1,7 +1,6 @@
 package br.com.manicure.tabelas;
 
 import br.com.manicure.model.Cliente;
-import br.com.manicure.model.Clientes;
 import java.util.ArrayList;
 import java.util.List;
 import javax.swing.table.AbstractTableModel;
@@ -13,7 +12,7 @@ import javax.swing.table.AbstractTableModel;
 public class ClienteTable extends AbstractTableModel {
 
     private List<Cliente> clientes;
-    private final String[] colunas = {"Código", "Nome", "CPF", "Telefone", "E-mail", "Endereço", "Pacote"};
+    private final String[] colunas = {"Código", "Nome", "CPF", "Telefone", "E-mail", "Endereço", "Pacote", "Atendimentos"};
 
     public ClienteTable() {
         clientes = new ArrayList();
@@ -49,16 +48,19 @@ public class ClienteTable extends AbstractTableModel {
                 val = atualCliente.getCpf();
                 break;
             case 3:
-                val = atualCliente.getCelular();
+                val = atualCliente.getContato().getCelular();
                 break;
             case 4:
-                val = atualCliente.getEmail();
+                val = atualCliente.getContato().getEmail();
                 break;
             case 5:
                 val = atualCliente.getEndereco().getRua().concat("  N°" + String.valueOf(atualCliente.getEndereco().getNumero()));
                 break;
             case 6:
                 val = atualCliente.getPacote().getNome();
+                break;
+            case 7:
+                val = String.valueOf(atualCliente.getAtendimentos());
                 break;
             default:
                 System.out.println("Inválide column (Cliente Table)");

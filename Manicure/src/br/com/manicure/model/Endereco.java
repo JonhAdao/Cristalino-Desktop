@@ -1,22 +1,22 @@
 package br.com.manicure.model;
 
-public class Endereco extends Pessoa {
+public class Endereco {
 
+    protected int idEndereco;
     protected String rua;
     protected int numero;
     protected String cep;
     protected String bairro;
     protected String cidade;
     protected String estado;
+    protected String pontoReferencia;
 
-    public Endereco() {
+    public int getIdEndereco() {
+        return idEndereco;
     }
 
-    public Endereco(String rua, int numero, String cep, String bairro) {
-        this.rua = rua;
-        this.numero = numero;
-        this.cep = cep;
-        this.bairro = bairro;
+    public void setIdEndereco(int idEndereco) {
+        this.idEndereco = idEndereco;
     }
 
     public String getRua() {
@@ -65,6 +65,14 @@ public class Endereco extends Pessoa {
 
     public void setEstado(String estado) {
         this.estado = estado;
+    }
+
+    public String getPontoReferencia() {
+        return pontoReferencia;
+    }
+
+    public void setPontoReferencia(String pontoReferencia) {
+        this.pontoReferencia = pontoReferencia;
     }
 
 }

@@ -1,17 +1,17 @@
-/**
- * @author Lais Frigério da Silva
- */
 package br.com.manicure.gui.agendamento;
 
+import br.com.manicure.dao.factory.DAOFactory;
+import br.com.manicure.esmalte.BuscarEsmalte;
 import br.com.manicure.gui.Agenda;
+import br.com.manicure.gui.cliente.BuscarCliente;
+import br.com.manicure.gui.procedimentos.BuscarProcedimento;
 import br.com.manicure.model.Agendamentos;
 import br.com.manicure.model.Cliente;
 import br.com.manicure.model.Esmalte;
 import br.com.manicure.model.Formatacao;
-import br.com.manicure.model.Horario;
 import br.com.manicure.model.Procedimento;
-import br.com.manicure.model.Validacao;
 import java.awt.Color;
+import java.sql.Timestamp;
 import java.text.NumberFormat;
 import java.util.List;
 import java.util.Locale;
@@ -19,21 +19,21 @@ import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
 import javax.swing.UIManager;
 import javax.swing.plaf.ColorUIResource;
-import javax.swing.JLabel;
 import javax.swing.border.LineBorder;
-import javax.swing.table.DefaultTableCellRenderer;
 
+/**
+ * @author Jhon
+ */
 public class NovoAgendamento extends javax.swing.JFrame {
 
     private final Agenda tela;
-    private final Agendamentos agenda;
-    private final Cliente cliente = null;
-    private final Procedimento procedimento = null;
-    private final Esmalte esmalte = null;
+    private Cliente cliente = null;
+    private Procedimento procedimento = null;
+    private Esmalte esmalte = null;
 
-    public NovoAgendamento(Agenda tela, Agendamentos a) {
+    public NovoAgendamento(Agenda tela) {
         initComponents();
-        this.setIconImage(new ImageIcon(getClass().getResource("/images/icons/calendar.png")).getImage());
+        this.setIconImage(new ImageIcon(getClass().getResource("/br/com/manicure/icones/agendamentosicon.png")).getImage());
         UIManager.put("Button.focus", new ColorUIResource(new Color(0, 0, 0, 0)));
         UIManager.put("ToolTip.background", Color.decode("#F7F7F7"));
         UIManager.put("ToolTip.border", new LineBorder(Color.decode("#006634"), 1));
@@ -42,23 +42,15 @@ public class NovoAgendamento extends javax.swing.JFrame {
         UIManager.put("Button.background", Color.WHITE);
 
         this.tela = tela;
-        this.agenda = a;
         this.setTitle("Novo agendamento");
         NumberFormat format = NumberFormat.getCurrencyInstance(Locale.US);
         format.setMaximumFractionDigits(0);
-        Formatacao.setDisableTextField(tData);
-        Formatacao.setDisableTextField(tHora);
+
         Formatacao.setDisableTextField(tCliente);
         Formatacao.setDisableTextField(tProcedimento);
-        tHora.setText(Formatacao.dateTime2OnlyStringTime(a.getDataAgendamento()));
-        tData.setText(Formatacao.dateTime2OnlyStringDate(a.getDataAgendamento()));
-        tHora.setEditable(false);
-        tData.setEditable(false);
+        Formatacao.setDisableTextField(tCorEsmalte);
+        Formatacao.setDisableTextField(tEndereco);
 
-    }
-
-    public NovoAgendamento() {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
     }
 
     @SuppressWarnings("unchecked")
@@ -77,10 +69,8 @@ public class NovoAgendamento extends javax.swing.JFrame {
         jScrollObservacoes = new javax.swing.JScrollPane();
         tObservacao = new javax.swing.JTextArea();
         jLabel3 = new javax.swing.JLabel();
-        tData = new javax.swing.JFormattedTextField();
         jLabel13 = new javax.swing.JLabel();
         jLabel6 = new javax.swing.JLabel();
-        tHora = new javax.swing.JFormattedTextField();
         jLabel7 = new javax.swing.JLabel();
         jLabel20 = new javax.swing.JLabel();
         jLabel22 = new javax.swing.JLabel();
@@ -96,6 +86,8 @@ public class NovoAgendamento extends javax.swing.JFrame {
         bBuscarCorEsmalte = new javax.swing.JButton();
         jLabel24 = new javax.swing.JLabel();
         tFrete = new javax.swing.JTextField();
+        tDate = new com.toedter.calendar.JDateChooser();
+        boxHora = new javax.swing.JComboBox<>();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("Novo Usuário");
@@ -105,20 +97,18 @@ public class NovoAgendamento extends javax.swing.JFrame {
         bg.setBackground(new java.awt.Color(247, 247, 247));
 
         input.setBackground(new java.awt.Color(247, 247, 247));
+        input.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         tCliente.setEnabled(false);
         tCliente.setSelectionColor(new java.awt.Color(0, 102, 67));
-        tCliente.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                tClienteActionPerformed(evt);
-            }
-        });
+        input.add(tCliente, new org.netbeans.lib.awtextra.AbsoluteConstraints(150, 40, 254, 34));
 
         jLabel4.setFont(new java.awt.Font("Segoe UI", 0, 13)); // NOI18N
         jLabel4.setText("Cliente");
         jLabel4.setMaximumSize(new java.awt.Dimension(40, 20));
         jLabel4.setMinimumSize(new java.awt.Dimension(40, 20));
         jLabel4.setPreferredSize(new java.awt.Dimension(40, 20));
+        input.add(jLabel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(70, 40, -1, -1));
 
         jLabel8.setFont(new java.awt.Font("Segoe UI", 0, 13)); // NOI18N
         jLabel8.setForeground(new java.awt.Color(211, 0, 0));
@@ -126,17 +116,19 @@ public class NovoAgendamento extends javax.swing.JFrame {
         jLabel8.setMaximumSize(new java.awt.Dimension(5, 20));
         jLabel8.setMinimumSize(new java.awt.Dimension(5, 20));
         jLabel8.setPreferredSize(new java.awt.Dimension(5, 20));
+        input.add(jLabel8, new org.netbeans.lib.awtextra.AbsoluteConstraints(130, 40, 15, -1));
 
         jLabel14.setFont(new java.awt.Font("Segoe UI", 0, 13)); // NOI18N
         jLabel14.setText("Observação");
         jLabel14.setMaximumSize(new java.awt.Dimension(40, 20));
         jLabel14.setMinimumSize(new java.awt.Dimension(40, 20));
         jLabel14.setPreferredSize(new java.awt.Dimension(40, 20));
+        input.add(jLabel14, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 360, 75, -1));
 
         bCancelarAgendamento.setBackground(new java.awt.Color(211, 0, 0));
         bCancelarAgendamento.setFont(new java.awt.Font("Segoe UI", 0, 16)); // NOI18N
         bCancelarAgendamento.setForeground(new java.awt.Color(255, 255, 255));
-        bCancelarAgendamento.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/icons/error.png"))); // NOI18N
+        bCancelarAgendamento.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/com/manicure/icones/cancelar.png"))); // NOI18N
         bCancelarAgendamento.setText("Cancelar");
         bCancelarAgendamento.setBorder(null);
         bCancelarAgendamento.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
@@ -165,11 +157,12 @@ public class NovoAgendamento extends javax.swing.JFrame {
                 bCancelarAgendamentoKeyPressed(evt);
             }
         });
+        input.add(bCancelarAgendamento, new org.netbeans.lib.awtextra.AbsoluteConstraints(430, 480, 104, 40));
 
         bSalvarAgendamento.setBackground(new java.awt.Color(0, 102, 52));
         bSalvarAgendamento.setFont(new java.awt.Font("Segoe UI", 0, 16)); // NOI18N
         bSalvarAgendamento.setForeground(new java.awt.Color(255, 255, 255));
-        bSalvarAgendamento.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/icons/checked.png"))); // NOI18N
+        bSalvarAgendamento.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/com/manicure/icones/Ok.png"))); // NOI18N
         bSalvarAgendamento.setText("Salvar");
         bSalvarAgendamento.setBorder(null);
         bSalvarAgendamento.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
@@ -193,23 +186,19 @@ public class NovoAgendamento extends javax.swing.JFrame {
                 bSalvarAgendamentoMouseExited(evt);
             }
         });
+        input.add(bSalvarAgendamento, new org.netbeans.lib.awtextra.AbsoluteConstraints(330, 480, 92, 40));
 
         tObservacao.setColumns(20);
         tObservacao.setRows(5);
         jScrollObservacoes.setViewportView(tObservacao);
 
+        input.add(jScrollObservacoes, new org.netbeans.lib.awtextra.AbsoluteConstraints(150, 340, 390, 110));
+
         jLabel3.setFont(new java.awt.Font("Segoe UI", 0, 13)); // NOI18N
         jLabel3.setText("Data");
         jLabel3.setMaximumSize(new java.awt.Dimension(40, 20));
         jLabel3.setMinimumSize(new java.awt.Dimension(40, 20));
-
-        tData.setBackground(new java.awt.Color(240, 240, 240));
-        try {
-            tData.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.MaskFormatter("##/##/####")));
-        } catch (java.text.ParseException ex) {
-            ex.printStackTrace();
-        }
-        tData.setEnabled(false);
+        input.add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(80, 190, -1, -1));
 
         jLabel13.setFont(new java.awt.Font("Segoe UI", 0, 13)); // NOI18N
         jLabel13.setForeground(new java.awt.Color(211, 0, 0));
@@ -217,16 +206,14 @@ public class NovoAgendamento extends javax.swing.JFrame {
         jLabel13.setMaximumSize(new java.awt.Dimension(5, 20));
         jLabel13.setMinimumSize(new java.awt.Dimension(5, 20));
         jLabel13.setPreferredSize(new java.awt.Dimension(5, 20));
+        input.add(jLabel13, new org.netbeans.lib.awtextra.AbsoluteConstraints(360, 190, 10, -1));
 
         jLabel6.setFont(new java.awt.Font("Segoe UI", 0, 13)); // NOI18N
         jLabel6.setText("Hora");
         jLabel6.setMaximumSize(new java.awt.Dimension(40, 20));
         jLabel6.setMinimumSize(new java.awt.Dimension(40, 20));
         jLabel6.setPreferredSize(new java.awt.Dimension(40, 20));
-
-        tHora.setBackground(new java.awt.Color(240, 240, 240));
-        tHora.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.DateFormatter(java.text.DateFormat.getTimeInstance())));
-        tHora.setEnabled(false);
+        input.add(jLabel6, new org.netbeans.lib.awtextra.AbsoluteConstraints(320, 190, 34, -1));
 
         jLabel7.setFont(new java.awt.Font("Segoe UI", 0, 13)); // NOI18N
         jLabel7.setForeground(new java.awt.Color(211, 0, 0));
@@ -234,15 +221,21 @@ public class NovoAgendamento extends javax.swing.JFrame {
         jLabel7.setMaximumSize(new java.awt.Dimension(5, 20));
         jLabel7.setMinimumSize(new java.awt.Dimension(5, 20));
         jLabel7.setPreferredSize(new java.awt.Dimension(5, 20));
+        input.add(jLabel7, new org.netbeans.lib.awtextra.AbsoluteConstraints(130, 190, 16, -1));
 
         jLabel20.setFont(new java.awt.Font("Segoe UI", 0, 13)); // NOI18N
         jLabel20.setText("Endereço ");
         jLabel20.setMaximumSize(new java.awt.Dimension(40, 20));
         jLabel20.setMinimumSize(new java.awt.Dimension(40, 20));
         jLabel20.setPreferredSize(new java.awt.Dimension(40, 20));
+        input.add(jLabel20, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 240, 67, -1));
 
         jLabel22.setFont(new java.awt.Font("Segoe UI", 0, 13)); // NOI18N
         jLabel22.setText("Frete");
+        input.add(jLabel22, new org.netbeans.lib.awtextra.AbsoluteConstraints(80, 300, 50, -1));
+
+        tEndereco.setEnabled(false);
+        input.add(tEndereco, new org.netbeans.lib.awtextra.AbsoluteConstraints(150, 240, 374, 35));
 
         bBuscarCliente.setBackground(new java.awt.Color(232, 121, 22));
         bBuscarCliente.setFont(new java.awt.Font("Segoe UI", 0, 16)); // NOI18N
@@ -263,17 +256,14 @@ public class NovoAgendamento extends javax.swing.JFrame {
                 bBuscarClienteMouseExited(evt);
             }
         });
-        bBuscarCliente.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                bBuscarClienteActionPerformed(evt);
-            }
-        });
+        input.add(bBuscarCliente, new org.netbeans.lib.awtextra.AbsoluteConstraints(420, 40, 50, 34));
 
         jLabel5.setFont(new java.awt.Font("Segoe UI", 0, 13)); // NOI18N
         jLabel5.setText("Procedimento");
         jLabel5.setMaximumSize(new java.awt.Dimension(40, 20));
         jLabel5.setMinimumSize(new java.awt.Dimension(40, 20));
         jLabel5.setPreferredSize(new java.awt.Dimension(40, 20));
+        input.add(jLabel5, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 90, 89, -1));
 
         jLabel15.setFont(new java.awt.Font("Segoe UI", 0, 13)); // NOI18N
         jLabel15.setForeground(new java.awt.Color(211, 0, 0));
@@ -281,9 +271,11 @@ public class NovoAgendamento extends javax.swing.JFrame {
         jLabel15.setMaximumSize(new java.awt.Dimension(5, 20));
         jLabel15.setMinimumSize(new java.awt.Dimension(5, 20));
         jLabel15.setPreferredSize(new java.awt.Dimension(5, 20));
+        input.add(jLabel15, new org.netbeans.lib.awtextra.AbsoluteConstraints(130, 90, 15, -1));
 
         tProcedimento.setEnabled(false);
         tProcedimento.setSelectionColor(new java.awt.Color(0, 102, 67));
+        input.add(tProcedimento, new org.netbeans.lib.awtextra.AbsoluteConstraints(150, 90, 254, 34));
 
         bBuscarProcedimento.setBackground(new java.awt.Color(232, 121, 22));
         bBuscarProcedimento.setFont(new java.awt.Font("Segoe UI", 0, 16)); // NOI18N
@@ -304,17 +296,14 @@ public class NovoAgendamento extends javax.swing.JFrame {
                 bBuscarProcedimentoMouseExited(evt);
             }
         });
-        bBuscarProcedimento.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                bBuscarProcedimentoActionPerformed(evt);
-            }
-        });
+        input.add(bBuscarProcedimento, new org.netbeans.lib.awtextra.AbsoluteConstraints(420, 90, 51, 34));
 
         jLabel21.setFont(new java.awt.Font("Segoe UI", 0, 13)); // NOI18N
         jLabel21.setText("Cor do Esmalte");
         jLabel21.setMaximumSize(new java.awt.Dimension(40, 20));
         jLabel21.setMinimumSize(new java.awt.Dimension(40, 20));
         jLabel21.setPreferredSize(new java.awt.Dimension(40, 20));
+        input.add(jLabel21, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 140, 103, -1));
 
         jLabel23.setFont(new java.awt.Font("Segoe UI", 0, 13)); // NOI18N
         jLabel23.setForeground(new java.awt.Color(211, 0, 0));
@@ -322,9 +311,11 @@ public class NovoAgendamento extends javax.swing.JFrame {
         jLabel23.setMaximumSize(new java.awt.Dimension(5, 20));
         jLabel23.setMinimumSize(new java.awt.Dimension(5, 20));
         jLabel23.setPreferredSize(new java.awt.Dimension(5, 20));
+        input.add(jLabel23, new org.netbeans.lib.awtextra.AbsoluteConstraints(130, 140, 15, -1));
 
         tCorEsmalte.setEnabled(false);
         tCorEsmalte.setSelectionColor(new java.awt.Color(0, 102, 67));
+        input.add(tCorEsmalte, new org.netbeans.lib.awtextra.AbsoluteConstraints(150, 140, 254, 34));
 
         bBuscarCorEsmalte.setBackground(new java.awt.Color(232, 121, 22));
         bBuscarCorEsmalte.setFont(new java.awt.Font("Segoe UI", 0, 16)); // NOI18N
@@ -345,11 +336,7 @@ public class NovoAgendamento extends javax.swing.JFrame {
                 bBuscarCorEsmalteMouseExited(evt);
             }
         });
-        bBuscarCorEsmalte.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                bBuscarCorEsmalteActionPerformed(evt);
-            }
-        });
+        input.add(bBuscarCorEsmalte, new org.netbeans.lib.awtextra.AbsoluteConstraints(420, 140, 51, 34));
 
         jLabel24.setFont(new java.awt.Font("Segoe UI", 0, 13)); // NOI18N
         jLabel24.setForeground(new java.awt.Color(211, 0, 0));
@@ -357,148 +344,20 @@ public class NovoAgendamento extends javax.swing.JFrame {
         jLabel24.setMaximumSize(new java.awt.Dimension(5, 20));
         jLabel24.setMinimumSize(new java.awt.Dimension(5, 20));
         jLabel24.setPreferredSize(new java.awt.Dimension(5, 20));
+        input.add(jLabel24, new org.netbeans.lib.awtextra.AbsoluteConstraints(130, 250, 16, -1));
+        input.add(tFrete, new org.netbeans.lib.awtextra.AbsoluteConstraints(150, 290, 254, 35));
+        input.add(tDate, new org.netbeans.lib.awtextra.AbsoluteConstraints(152, 190, 150, 30));
 
-        javax.swing.GroupLayout inputLayout = new javax.swing.GroupLayout(input);
-        input.setLayout(inputLayout);
-        inputLayout.setHorizontalGroup(
-            inputLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, inputLayout.createSequentialGroup()
-                .addGap(36, 36, Short.MAX_VALUE)
-                .addGroup(inputLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, inputLayout.createSequentialGroup()
-                        .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jLabel7, javax.swing.GroupLayout.PREFERRED_SIZE, 16, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(tData, javax.swing.GroupLayout.PREFERRED_SIZE, 80, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(18, 18, 18)
-                        .addComponent(jLabel6, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jLabel13, javax.swing.GroupLayout.PREFERRED_SIZE, 11, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(tHora, javax.swing.GroupLayout.PREFERRED_SIZE, 80, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(199, 199, 199))
-                    .addGroup(inputLayout.createSequentialGroup()
-                        .addGap(19, 19, 19)
-                        .addGroup(inputLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addGroup(inputLayout.createSequentialGroup()
-                                .addComponent(bSalvarAgendamento, javax.swing.GroupLayout.PREFERRED_SIZE, 92, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(bCancelarAgendamento, javax.swing.GroupLayout.PREFERRED_SIZE, 104, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addGroup(inputLayout.createSequentialGroup()
-                                .addGroup(inputLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                                    .addGroup(inputLayout.createSequentialGroup()
-                                        .addComponent(jLabel22, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED))
-                                    .addGroup(inputLayout.createSequentialGroup()
-                                        .addComponent(jLabel14, javax.swing.GroupLayout.PREFERRED_SIZE, 75, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addGap(23, 23, 23))
-                                    .addGroup(inputLayout.createSequentialGroup()
-                                        .addComponent(jLabel20, javax.swing.GroupLayout.PREFERRED_SIZE, 67, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                        .addComponent(jLabel24, javax.swing.GroupLayout.PREFERRED_SIZE, 16, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)))
-                                .addGroup(inputLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(jScrollObservacoes, javax.swing.GroupLayout.PREFERRED_SIZE, 437, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(tEndereco, javax.swing.GroupLayout.PREFERRED_SIZE, 374, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(tFrete, javax.swing.GroupLayout.PREFERRED_SIZE, 254, javax.swing.GroupLayout.PREFERRED_SIZE)))))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, inputLayout.createSequentialGroup()
-                        .addGroup(inputLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addGroup(inputLayout.createSequentialGroup()
-                                .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(jLabel8, javax.swing.GroupLayout.PREFERRED_SIZE, 15, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addComponent(tCliente, javax.swing.GroupLayout.PREFERRED_SIZE, 254, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(18, 18, 18)
-                                .addComponent(bBuscarCliente, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addGroup(inputLayout.createSequentialGroup()
-                                .addGroup(inputLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                                    .addGroup(inputLayout.createSequentialGroup()
-                                        .addComponent(jLabel5, javax.swing.GroupLayout.PREFERRED_SIZE, 89, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                        .addComponent(jLabel15, javax.swing.GroupLayout.PREFERRED_SIZE, 15, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                        .addComponent(tProcedimento, javax.swing.GroupLayout.PREFERRED_SIZE, 254, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                    .addGroup(inputLayout.createSequentialGroup()
-                                        .addComponent(jLabel21, javax.swing.GroupLayout.PREFERRED_SIZE, 89, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                        .addComponent(jLabel23, javax.swing.GroupLayout.PREFERRED_SIZE, 15, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addGap(12, 12, 12)
-                                        .addComponent(tCorEsmalte, javax.swing.GroupLayout.PREFERRED_SIZE, 254, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                                .addGap(18, 18, 18)
-                                .addGroup(inputLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(bBuscarProcedimento, javax.swing.GroupLayout.PREFERRED_SIZE, 51, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(bBuscarCorEsmalte, javax.swing.GroupLayout.PREFERRED_SIZE, 51, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                        .addGap(109, 109, 109)))
-                .addGap(47, 47, 47))
-        );
-        inputLayout.setVerticalGroup(
-            inputLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(inputLayout.createSequentialGroup()
-                .addGap(38, 38, 38)
-                .addGroup(inputLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, inputLayout.createSequentialGroup()
-                        .addGap(0, 0, Short.MAX_VALUE)
-                        .addGroup(inputLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(tCliente, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jLabel8, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                    .addComponent(bBuscarCliente, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addGap(20, 20, 20)
-                .addGroup(inputLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addGroup(inputLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                        .addComponent(jLabel15, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addComponent(jLabel5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addComponent(bBuscarProcedimento, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(tProcedimento, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(18, 18, 18)
-                .addGroup(inputLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, inputLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                        .addComponent(bBuscarCorEsmalte, javax.swing.GroupLayout.DEFAULT_SIZE, 34, Short.MAX_VALUE)
-                        .addGroup(inputLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jLabel23, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jLabel21, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                    .addComponent(tCorEsmalte, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(18, 18, Short.MAX_VALUE)
-                .addGroup(inputLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(tHora, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel13, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel6, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(tData, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel7, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(28, 28, 28)
-                .addGroup(inputLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel20, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel24, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(tEndereco, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(18, 18, 18)
-                .addGroup(inputLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel22)
-                    .addComponent(tFrete, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGroup(inputLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(inputLayout.createSequentialGroup()
-                        .addGap(43, 43, 43)
-                        .addComponent(jLabel14, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(128, 128, 128))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, inputLayout.createSequentialGroup()
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jScrollObservacoes, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(50, 50, 50)
-                        .addGroup(inputLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(bCancelarAgendamento, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(bSalvarAgendamento, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                .addGap(238, 238, 238))
-        );
+        boxHora.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "              ", "09:00:00", "09:30:00", "10:00:00", "10:30:00", "11:00:00", "11:30:00", "12:00:00", "13:00:00", "13:30:00", "14:00:00", "14:30:00", "15:00:00", "15:30:00", "16:00:00", "16:30:00", "17:00:00", "17:30:00", "18:00:00" }));
+        input.add(boxHora, new org.netbeans.lib.awtextra.AbsoluteConstraints(370, 190, 134, 30));
 
         javax.swing.GroupLayout bgLayout = new javax.swing.GroupLayout(bg);
         bg.setLayout(bgLayout);
         bgLayout.setHorizontalGroup(
             bgLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, bgLayout.createSequentialGroup()
-                .addGap(0, 0, Short.MAX_VALUE)
-                .addComponent(input, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(input, javax.swing.GroupLayout.PREFERRED_SIZE, 628, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
         );
         bgLayout.setVerticalGroup(
@@ -525,50 +384,59 @@ public class NovoAgendamento extends javax.swing.JFrame {
 
     private void bSalvarAgendamentoMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_bSalvarAgendamentoMouseClicked
         if (this.cliente == null) {
-            JOptionPane.showMessageDialog(null, "É obrigatório selecionar um Cliente", "Atenção", JOptionPane.WARNING_MESSAGE);
+            JOptionPane.showMessageDialog(null, "É obrigatório selecionar um cliente", "Atenção", JOptionPane.WARNING_MESSAGE);
             return;
         }
 
         if (this.procedimento == null) {
-            JOptionPane.showMessageDialog(null, "É obrigatório selecionar um Procedimento", "Atenção", JOptionPane.WARNING_MESSAGE);
+            JOptionPane.showMessageDialog(null, "É obrigatório selecionar um procedimento", "Atenção", JOptionPane.WARNING_MESSAGE);
             return;
         }
 
-        if (!Validacao.dateIsValid(tData.getText())) {
-            JOptionPane.showMessageDialog(null, "Informe uma data válida", "Atenção", JOptionPane.WARNING_MESSAGE);
+        if (this.esmalte == null) {
+            JOptionPane.showMessageDialog(null, "É obrigatório selecionar um esmalte", "Atenção", JOptionPane.WARNING_MESSAGE);
             return;
         }
 
-        if (!Validacao.isEmpty(tEndereco.getText())) {
-            JOptionPane.showMessageDialog(null, "O campo Endereço deve ser preenchido", "Atenção", JOptionPane.WARNING_MESSAGE);
+        if (tDate.getDate() == null) {
+            JOptionPane.showMessageDialog(null, "É obrigatório selecionar uma data", "Atenção", JOptionPane.WARNING_MESSAGE);
+            return;
         }
 
-        /* switch (ac.cadastrar(this.agenda)) {
-            case 0:
-                JOptionPane.showMessageDialog(null, "Ocorreu um erro ao realizar o cadastro. Tente novamente mais tarde ou contate o Administrador do sistema", "Atenção", JOptionPane.ERROR_MESSAGE);
-                break;
-            case 1:
-                JOptionPane.showMessageDialog(null, "Agendamento efetuado com sucesso", "Sucesso", JOptionPane.INFORMATION_MESSAGE);
-                if (this.tela.getTDate().getDate() != null) {
-                    List<Horario> lista = ac.agendamentos(Formatacao.date2StringScreen(this.tela.getTDate().getDate()));
-                    if (lista != null) {
-                        this.tela.tableModelAgenda.addLista(lista);
-                        for (int i = 0; i < 20; i++) {
-                            this.tela.getTableAgenda().setRowHeight(i, 30);
-                        }
-                        DefaultTableCellRenderer centerRenderer = new DefaultTableCellRenderer();
-                        centerRenderer.setHorizontalAlignment(JLabel.CENTER);
-                        this.tela.getTableAgenda().getColumnModel().getColumn(0).setCellRenderer(centerRenderer);
-                        this.tela.getTableAgenda().getColumnModel().getColumn(0).setMinWidth(100);
-                        this.tela.getTableAgenda().getColumnModel().getColumn(0).setMaxWidth(100);
-                    }
-                }
-                this.dispose();
-                break;
-            case 2:
-                JOptionPane.showMessageDialog(null, "Não foi possível replicar o agendamento, por motivo de horário cheio.", "Atenção", JOptionPane.ERROR_MESSAGE);
-                break;
-        }*/
+        if (boxHora.getSelectedIndex() == 0) {
+            JOptionPane.showMessageDialog(null, "É obrigatório selecionar um horario", "Atenção", JOptionPane.WARNING_MESSAGE);
+            return;
+        }
+
+        Agendamentos a = new Agendamentos();
+        int indice = boxHora.getSelectedIndex();
+        String horas = boxHora.getItemAt(indice);
+
+        a.setCliente(cliente);
+        a.setDataAgendamento(new Timestamp(tDate.getDate().getTime()));
+        if (!tFrete.getText().isEmpty()) {
+            a.setFrete(Double.valueOf(tFrete.getText()));
+        }
+        a.setProcedimento(procedimento);
+        a.setCorEsmalte(esmalte);
+        a.setHorario(horas);
+        a.setObservacao(tObservacao.getText());
+        if (a.getFrete() != null) {
+            a.setValoraPagar(a.getFrete() + procedimento.getValor());
+        } else {
+            a.setValoraPagar(procedimento.getValor());
+        }
+        
+        DAOFactory.getAgendamentoDAO().cadastrar(a);
+        JOptionPane.showMessageDialog(null, "O Agendamento foi efetuado com sucesso", "Sucesso", JOptionPane.INFORMATION_MESSAGE);
+        List<Agendamentos> lista = DAOFactory.getAgendamentoDAO().listar();
+        if (lista != null) {
+            this.tela.tableModelAgendamento.addLista(lista);
+            this.dispose();
+        } else {
+            JOptionPane.showMessageDialog(null, "Ocorreu um erro ao realizar o agendamento. Tente novamente mais tarde ou contate o Administrador do sistema", "Atenção", JOptionPane.WARNING_MESSAGE);
+        }
+
     }//GEN-LAST:event_bSalvarAgendamentoMouseClicked
 
     private void bSalvarAgendamentoFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_bSalvarAgendamentoFocusLost
@@ -580,7 +448,6 @@ public class NovoAgendamento extends javax.swing.JFrame {
     }//GEN-LAST:event_bSalvarAgendamentoFocusGained
 
     private void bCancelarAgendamentoKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_bCancelarAgendamentoKeyPressed
-        // this.agenda.setConsulta(null);
         this.dispose();
     }//GEN-LAST:event_bCancelarAgendamentoKeyPressed
 
@@ -593,7 +460,6 @@ public class NovoAgendamento extends javax.swing.JFrame {
     }//GEN-LAST:event_bCancelarAgendamentoMouseEntered
 
     private void bCancelarAgendamentoMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_bCancelarAgendamentoMouseClicked
-        //  this.agenda.setConsulta(null);
         this.dispose();
     }//GEN-LAST:event_bCancelarAgendamentoMouseClicked
 
@@ -607,6 +473,8 @@ public class NovoAgendamento extends javax.swing.JFrame {
 
     private void bBuscarClienteMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_bBuscarClienteMouseClicked
         bBuscarCliente.setBackground(Color.decode("#E87916"));
+        BuscarCliente clientes = new BuscarCliente(this);
+        clientes.setVisible(true);
     }//GEN-LAST:event_bBuscarClienteMouseClicked
 
     private void bBuscarClienteMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_bBuscarClienteMouseEntered
@@ -617,45 +485,33 @@ public class NovoAgendamento extends javax.swing.JFrame {
         bBuscarCliente.setBackground(Color.decode("#E87916"));
     }//GEN-LAST:event_bBuscarClienteMouseExited
 
-    private void bBuscarClienteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bBuscarClienteActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_bBuscarClienteActionPerformed
-
     private void bBuscarProcedimentoMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_bBuscarProcedimentoMouseClicked
-        // TODO add your handling code here:
+        bBuscarProcedimento.setBackground(Color.decode("#E87916"));
+        BuscarProcedimento procedimentos = new BuscarProcedimento(this);
+        procedimentos.setVisible(true);
     }//GEN-LAST:event_bBuscarProcedimentoMouseClicked
 
     private void bBuscarProcedimentoMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_bBuscarProcedimentoMouseEntered
-        // TODO add your handling code here:
+        bBuscarProcedimento.setBackground(Color.decode("#EB9F59"));
     }//GEN-LAST:event_bBuscarProcedimentoMouseEntered
 
     private void bBuscarProcedimentoMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_bBuscarProcedimentoMouseExited
-        // TODO add your handling code here:
+        bBuscarProcedimento.setBackground(Color.decode("#E87916"));
     }//GEN-LAST:event_bBuscarProcedimentoMouseExited
 
-    private void bBuscarProcedimentoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bBuscarProcedimentoActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_bBuscarProcedimentoActionPerformed
-
     private void bBuscarCorEsmalteMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_bBuscarCorEsmalteMouseClicked
-        // TODO add your handling code here:
+        bBuscarCorEsmalte.setBackground(Color.decode("#E87916"));
+        BuscarEsmalte esmaltes = new BuscarEsmalte(this);
+        esmaltes.setVisible(true);
     }//GEN-LAST:event_bBuscarCorEsmalteMouseClicked
 
     private void bBuscarCorEsmalteMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_bBuscarCorEsmalteMouseEntered
-        // TODO add your handling code here:
+        bBuscarCorEsmalte.setBackground(Color.decode("#EB9F59"));
     }//GEN-LAST:event_bBuscarCorEsmalteMouseEntered
 
     private void bBuscarCorEsmalteMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_bBuscarCorEsmalteMouseExited
-        // TODO add your handling code here:
+        bBuscarCorEsmalte.setBackground(Color.decode("#E87916"));
     }//GEN-LAST:event_bBuscarCorEsmalteMouseExited
-
-    private void bBuscarCorEsmalteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bBuscarCorEsmalteActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_bBuscarCorEsmalteActionPerformed
-
-    private void tClienteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_tClienteActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_tClienteActionPerformed
 
     public static void main(String args[]) {
         /* Set the Nimbus look and feel */
@@ -697,6 +553,7 @@ public class NovoAgendamento extends javax.swing.JFrame {
     private javax.swing.JButton bCancelarAgendamento;
     private javax.swing.JButton bSalvarAgendamento;
     private javax.swing.JPanel bg;
+    private javax.swing.JComboBox<String> boxHora;
     private javax.swing.ButtonGroup buttonGroup1;
     private javax.swing.JPanel input;
     private javax.swing.JLabel jLabel13;
@@ -716,11 +573,28 @@ public class NovoAgendamento extends javax.swing.JFrame {
     private javax.swing.JScrollPane jScrollObservacoes;
     private javax.swing.JTextField tCliente;
     private javax.swing.JTextField tCorEsmalte;
-    private javax.swing.JFormattedTextField tData;
+    private com.toedter.calendar.JDateChooser tDate;
     private javax.swing.JTextField tEndereco;
     private javax.swing.JTextField tFrete;
-    private javax.swing.JFormattedTextField tHora;
     private javax.swing.JTextArea tObservacao;
     private javax.swing.JTextField tProcedimento;
     // End of variables declaration//GEN-END:variables
+
+    public void setCliente(Cliente c) {
+        this.cliente = c;
+        tCliente.setText(cliente.getNome());
+        tEndereco.setText(cliente.getEndereco().getRua() + " Nº " + String.valueOf(cliente.getEndereco().getNumero()));
+    }
+
+    public void setProcedimento(Procedimento p) {
+        this.procedimento = p;
+        tProcedimento.setText(procedimento.getNome());
+
+    }
+
+    public void setCorEsmalte(Esmalte e) {
+        this.esmalte = e;
+        tCorEsmalte.setText(esmalte.getCor());
+
+    }
 }
